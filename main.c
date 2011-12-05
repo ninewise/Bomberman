@@ -9,7 +9,7 @@
 #include "cmdqueue.h"
 #include "highscores.h"
 
-int main(int argc, char *argv[]) {
+int mainHS(int argc, char *argv[]) {
 	load_highscores();
 	display_highscores();
 	check_highscore_entry(7);
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 	- Number of the level to start in.
 	- Random seed for level generation.
 */
-int main2(int argc, char *argv[]) 
+int main(int argc, char *argv[]) 
 {
 	int total_score = 0;	
 	{

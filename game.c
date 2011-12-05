@@ -20,6 +20,7 @@ void do_game_loop(Game * game) {
 		check_game_input(game);
 		update_game(game);
 		render_game(game);
+        stop = (game->enemies_left == 0 || game->game_over == 0);
 	}
 
 	destroy_level(&game->level);
@@ -47,6 +48,9 @@ void update_game(Game * game)
 
 	/* Process bombs */
 	process_bombs(game);
+
+    // TODO
+    game->enemies_left--;
 }
 
 void render_game(Game * game)
@@ -64,15 +68,12 @@ void do_player_movement(Game * game) {
     }
 }
 
-void do_enemy_ai(Game * game)
-{
+void do_enemy_ai(Game * game) {
 }
 
-void process_bonus_items(Game * game)
-{
+void process_bonus_items(Game * game) {
 }
 
-void process_bombs(Game * game)
-{
+void process_bombs(Game * game) {
 }
 
