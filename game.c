@@ -53,8 +53,7 @@ void update_game(Game * game)
     game->enemies_left--;
 }
 
-void render_game(Game * game)
-{
+void render_game(Game * game) {
 }
 
 void destroy_game(Game * game) {
