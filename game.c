@@ -22,7 +22,7 @@ void do_game_loop(Game * game) {
 		check_game_input(game);
 		update_game(game);
 		render_game(game);
-        stop = (game->enemies_left == 0 || game->game_over == 0);
+        stop = (game->enemies_left == 0 || game->game_over == 0 || gui_is_terminated());
 	}
 
 	destroy_level(&game->level);
@@ -55,6 +55,7 @@ void update_game(Game * game)
 
 void render_game(Game * game) {
     render_level(&game->level);
+    gui_draw_buffer();
 }
 
 void destroy_game(Game * game) {
