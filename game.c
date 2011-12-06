@@ -49,8 +49,6 @@ void update_game(Game * game)
 	/* Process bombs */
 	process_bombs(game);
 
-    // TODO
-    game->enemies_left--;
 }
 
 void render_game(Game * game) {
