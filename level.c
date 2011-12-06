@@ -21,7 +21,6 @@ void init_level(Level * level, LevelInfo level_info) {
 	int i, j;
 	level->level_info = level_info;
 	level->entities = (Entity**) malloc(level_info.width * sizeof(Entity*));
-    randomize();
 	for(i = 0; i < level_info.width; i++) {
         level->entities[i] = (Entity*) calloc(level_info.height, sizeof(Entity));
         for(j = 0; j < level_info.height - 1; j++) {
@@ -30,8 +29,8 @@ void init_level(Level * level, LevelInfo level_info) {
                 level->entities[i][j].type = OBSTACLE;
                 level->entities[i][j].obstacle.x = i;
                 level->entities[i][j].obstacle.y = j;
-                level->entities[i][j].obstacle.is_destructable = 1
-            } else if(0 == random(4)) {
+                level->entities[i][j].obstacle.is_destructable = 1;
+            } else if(rand() < level_info.fill_ratio * (RAND_MAX+1u)) {
                 level->entities[i][j].type = OBSTACLE;
                 level->entities[i][j].obstacle.x = i;
                 level->entities[i][j].obstacle.y = j;
@@ -53,10 +52,10 @@ void render_level(Level * level) {
     int i, j;
     for(i = 0; i < level->level_info.height; i++) for(j = 0; j < level->level_info.width; j++) {
         switch(level->entities[i][j].type) {
-            case BOMB: gui_add_bomb(level->entities[i][j].bomb);
+            case BOMB: gui_add_bomb(&level->entities[i][j].bomb);
             case EXPLOSION:;
-            case POWERUP: gui_add_powerup(level->entities[i][j].powerup);
-            case OBSTACLE: gui_add_obstacle(level->entities[i][j].obstacle);
+            case POWERUP: gui_add_powerup(&level->entities[i][j].powerup);
+            case OBSTACLE: gui_add_obstacle(&level->entities[i][j].obstacle);
         }
     }
 }
