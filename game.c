@@ -16,6 +16,8 @@ void init_game(Game* game, int level_nr) {
 void do_game_loop(Game * game) {
 	int stop = 0;
 
+    gui_set_level_info(&game->level.level_info);
+
 	while(!stop) {
 		check_game_input(game);
 		update_game(game);
@@ -52,6 +54,7 @@ void update_game(Game * game)
 }
 
 void render_game(Game * game) {
+    render_level(&game->level);
 }
 
 void destroy_game(Game * game) {
