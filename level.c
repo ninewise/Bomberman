@@ -25,15 +25,15 @@ void init_level(Level * level, LevelInfo level_info) {
         level->entities[i] = (Entity*) calloc(level_info.height, sizeof(Entity));
     }
 
-	for(i = 1; i < level_info.width - 1; i++) {
-        for(j = 1; j < level_info.height - 1; j++) {
+	for(i = 0; i < level_info.width; i++) {
+        for(j = 0; j < level_info.height; j++) {
             // Het veld opvullen met entiteiten, te beginnen met vaste blokken.
-            /*if(i == 0 || j == 0 || i+1 == level_info.height || (i%2==0 && j%2==0)) {
+            if(i == 0 || j == 0 || i+1 == level_info.width || j+1 == level_info.height || (i%2==0 && j%2==0)) {
                 level->entities[i][j].type = OBSTACLE;
                 level->entities[i][j].obstacle.x = i * TILE_SIZE;
                 level->entities[i][j].obstacle.y = j * TILE_SIZE;
                 level->entities[i][j].obstacle.is_destructable = 1;
-            } else */if(rand() < level_info.fill_ratio * (RAND_MAX+1u)) {
+            } else if(rand() < level_info.fill_ratio * (RAND_MAX+1u)) {
                 level->entities[i][j].type = OBSTACLE;
                 level->entities[i][j].obstacle.x = i * TILE_SIZE;
                 level->entities[i][j].obstacle.y = j * TILE_SIZE;
@@ -73,11 +73,12 @@ void init_level(Level * level, LevelInfo level_info) {
 void render_level(Level * level) {
     int i, j;
     for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++) {
-        switch(level->entities[i][j].type) {
-            case BOMB: gui_add_bomb(&level->entities[i][j].bomb);
+        Entity entity = level->entities[i][j];
+        switch(entity.type) {
+            case BOMB: gui_add_bomb(&entity.bomb);
             case EXPLOSION:;
-            case POWERUP: gui_add_powerup(&level->entities[i][j].powerup);
-            case OBSTACLE: gui_add_obstacle(&level->entities[i][j].obstacle);
+            case POWERUP: gui_add_powerup(&entity.powerup);
+            case OBSTACLE: if(!entity.obstacle.is_destructable) gui_add_obstacle(&entity.obstacle);
         }
     }
 }
