@@ -2,6 +2,7 @@
 #include "blast_it.h"
 #include "gui.h"
 #include <stdlib.h>
+#include "entity.h"
 
 LevelInfo generate_level_info(int level_nr)
 {
@@ -18,56 +19,44 @@ LevelInfo generate_level_info(int level_nr)
 }
 
 void init_level(Level * level, LevelInfo level_info) {
-	int i, j;
+	int i, j, total;
+    float ratio;
+
 	level->level_info = level_info;
+    // Plaats alloceren voor de tabel van entiteiten.
 	level->entities = (Entity**) malloc(level_info.width * sizeof(Entity*));
 	for(i = 0; i < level_info.width; i++) {
         level->entities[i] = (Entity*) calloc(level_info.height, sizeof(Entity));
     }
 
+    // We vormen de verhouding zodanig om, dat de drie vakjes linksboven die
+    // nooit gevuld mogen worden met obstakels niet meegerekend worden. Moesten
+    // die hokjes namelijk opgevuld worden, zou de speler of niet kunnen
+    // bewegen, of geen bom kunnen plaatsen zonder zichzelf te raken.
+    //
+    // De nieuwe verhouding is de oude, vermenigvuldigd met het totaal aantal
+    // blokken dat gevuld kan worden, gedeelt door dat aantal minus drie.
+    total = (level_info.width - 2)*(level_info.height - 2)
+            - ((level_info.width - 2)/2) * ((level_info.height - 2)/2);
+    ratio = level_info.fill_ratio * total / (total - 3);
+
 	for(i = 0; i < level_info.width; i++) {
         for(j = 0; j < level_info.height; j++) {
             // Het veld opvullen met entiteiten, te beginnen met vaste blokken.
             if(i == 0 || j == 0 || i+1 == level_info.width || j+1 == level_info.height || (i%2==0 && j%2==0)) {
-                level->entities[i][j].type = OBSTACLE;
-                level->entities[i][j].obstacle.x = i * TILE_SIZE;
-                level->entities[i][j].obstacle.y = j * TILE_SIZE;
-                level->entities[i][j].obstacle.is_destructable = 1;
-            } else if(rand() < level_info.fill_ratio * (RAND_MAX+1u)) {
-                level->entities[i][j].type = OBSTACLE;
-                level->entities[i][j].obstacle.x = i * TILE_SIZE;
-                level->entities[i][j].obstacle.y = j * TILE_SIZE;
-                level->entities[i][j].obstacle.is_destructable = 0;
+                put_obstacle(level->entities, i, j, 1);
+            } else if(rand() < ratio * (RAND_MAX+1u)) {
+                put_obstacle(level->entities, i, j, 0);
             } else {
-                level->entities[i][j].type = EMPTY_SPACE;
-                level->entities[i][j].empty_space.x = i * TILE_SIZE;
-                level->entities[i][j].empty_space.y = j * TILE_SIZE;
+                put_empty_space(level->entities, i, j);
             }
         }
     }
-
-    /*
-    for(i = 0; i < level_info.width; i++) {
-        level->entities[i][0].type = OBSTACLE;
-        level->entities[i][0].obstacle.x = i * TILE_SIZE;
-        level->entities[i][0].obstacle.y = 0;
-        level->entities[i][0].obstacle.is_destructable = 1;
-        level->entities[i][level_info.height - 1].type = OBSTACLE;
-        level->entities[i][level_info.height - 1].obstacle.x = i * TILE_SIZE;
-        level->entities[i][level_info.height - 1].obstacle.y = (level_info.height - 1) * TILE_SIZE;
-        level->entities[i][level_info.height - 1].obstacle.is_destructable = 1;
-    }
-    for(j = 0; j < level_info.height; j++) {
-        level->entities[0][i].type = OBSTACLE;
-        level->entities[0][i].obstacle.x = 0;
-        level->entities[0][i].obstacle.y = i * TILE_SIZE;
-        level->entities[0][i].obstacle.is_destructable = 1;
-        level->entities[level_info.width][i].type = OBSTACLE;
-        level->entities[level_info.width][i].obstacle.x = (level_info.width - 1) * TILE_SIZE;
-        level->entities[level_info.width][i].obstacle.y = i * TILE_SIZE;
-        level->entities[level_info.width][i].obstacle.is_destructable = 1;
-    }
-    */
+    // Nu verzekeren we ons ervan dat de coordinaten (1,1) (1,2) en (2,1) leeg
+    // zijn, dan kan de speler zeker beginnen.
+    put_empty_space(level->entities, 1, 1);
+    put_empty_space(level->entities, 1, 2);
+    put_empty_space(level->entities, 2, 1);
 }
 
 void render_level(Level * level) {
@@ -79,6 +68,7 @@ void render_level(Level * level) {
             case EXPLOSION:;
             case POWERUP: gui_add_powerup(&entity.powerup);
             case OBSTACLE: if(!entity.obstacle.is_destructable) gui_add_obstacle(&entity.obstacle);
+            case EMPTY_SPACE:;
         }
     }
 }
