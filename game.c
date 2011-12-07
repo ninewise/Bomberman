@@ -69,7 +69,7 @@ void destroy_game(Game * game) {
 
 void do_player_movement(Game * game) {
     if(game->input.hasMoved) {
-        move_player(&game->player, game->input.moves, &game->level);
+        move_player(&game->player, game->input.moves, game->level.entities);
     }
 }
 
