@@ -17,6 +17,11 @@ void init_player(Player* player);
 void move_player(Player* player, int moves[4], Level* level);
 
 /**
+ * Tekent de speler op het scherm.
+ */
+void render_player(Player* player);
+
+/**
  * Verwijderd de speler uit het geheugen.
  */
 void destroy_player(Player* player);

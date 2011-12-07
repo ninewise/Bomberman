@@ -4,6 +4,7 @@
 #include "level.h"
 #include "player.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void init_game(Game* game, int level_nr) {
     init_level(&game->level, generate_level_info(level_nr));
@@ -55,6 +56,7 @@ void update_game(Game * game)
 
 void render_game(Game * game) {
     render_level(&game->level);
+    render_player(&game->player);
     gui_draw_buffer();
 }
 
@@ -76,5 +78,8 @@ void process_bonus_items(Game * game) {
 }
 
 void process_bombs(Game * game) {
+    if(game->input.dropBomb) {
+        gui_set_bombs_left(game->player.remaining_bombs--);
+    }
 }
 

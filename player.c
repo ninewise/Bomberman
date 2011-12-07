@@ -3,10 +3,11 @@
 #include "game.h"
 #include "blast_it.h"
 #include "level.h"
+#include "gui.h"
 
 void init_player(Player* player) {
-    player->x = 0;
-    player->y = 0;
+    player->x = 1 * TILE_SIZE;
+    player->y = 1 * TILE_SIZE;
     player->orientation = NORTH;
     player->current_bomb_power = 1;
     player->remaining_bombs = 10;
@@ -42,6 +43,10 @@ void move_player(Player* player, int moves[4], Level* level) {
     if(entity.type != EMPTY_SPACE) {
         new_y = player->y - (player->y % TILE_SIZE);
     }
+}
+
+void render_player(Player* player) {
+    gui_add_player(player);
 }
 
 void destroy_player(Player* player) {}
