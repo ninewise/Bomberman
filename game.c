@@ -5,6 +5,7 @@
 #include "player.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 void init_game(Game* game, int level_nr) {
     init_level(&game->level, generate_level_info(level_nr));
@@ -23,6 +24,7 @@ void do_game_loop(Game * game) {
 		check_game_input(game);
 		update_game(game);
 		render_game(game);
+        usleep(7); // TODO verwijderen voor op windows
         stop = (game->enemies_left == 0 || game->game_over == 0 || gui_is_terminated());
 	}
 
