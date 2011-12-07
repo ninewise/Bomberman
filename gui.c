@@ -269,7 +269,7 @@ void gui_set_bombs_left(int nr_of_bombs)
 	} else {
 		char lives_str[8];
 		char* cmd = create_cmd_string("LIVES ");
-		sprintf(lives_str, 8 * sizeof(char), "%d", nr_of_bombs);
+		sprintf(lives_str, "%d", nr_of_bombs);
 		append_str(cmd, lives_str);
 		enqueue(&cmd_queue, cmd);
 	}
