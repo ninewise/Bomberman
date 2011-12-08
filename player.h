@@ -5,6 +5,9 @@
 #include "blast_it.h"
 #include "level.h"
 
+#define PLAYER_TRANSLATE_X (TILE_SIZE / 2)
+#define PLAYER_TRANSLATE_Y (3 * TILE_SIZE / 4)
+
 /**
  * Initialiseert de speler, met dummy coordinaten en dergelijke.
  */

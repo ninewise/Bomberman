@@ -8,8 +8,8 @@
 void move_walker(Walker* walker, int moves[4], Entity** entities, int distance) {
     // We translateren de walker naar het midden van de onderste helft van het
     // hokje, wat het gemakkelijker maakt om geldige plaatsen te berekenen.
-    int ox = walker->x + TILE_SIZE/2;   // De oude x-coordinaat;
-    int oy = walker->y + 3*TILE_SIZE/4; // De oude y-coordinaat;
+    int ox = walker->x + PLAYER_TRANSLATE_X;   // De oude x-coordinaat;
+    int oy = walker->y + PLAYER_TRANSLATE_Y; // De oude y-coordinaat;
     int nx = ox;                        // De nieuwe x-coordinaat;
     int ny = oy;                        // De nieuwe y-coordinaat;
 
