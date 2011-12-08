@@ -27,7 +27,7 @@ void player_drop_bomb(Player * player, Entity** entities) {
         BOMB_TICKS
     };
     bomb_entity.bomb = bomb;
-    
+
     entities[player->x / TILE_SIZE][player->y / TILE_SIZE] = bomb_entity;
 }
 

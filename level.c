@@ -64,11 +64,11 @@ void render_level(Level * level) {
     for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++) {
         Entity entity = level->entities[i][j];
         switch(entity.type) {
-            case BOMB: gui_add_bomb(&entity.bomb);
-            case EXPLOSION:;
-            case POWERUP: gui_add_powerup(&entity.powerup);
-            case OBSTACLE: if(!entity.obstacle.is_destructable) gui_add_obstacle(&entity.obstacle);
-            case EMPTY_SPACE:;
+            case BOMB: gui_add_bomb(&entity.bomb); break;
+            case EXPLOSION: break;
+            case POWERUP: gui_add_powerup(&entity.powerup); break;
+            case OBSTACLE: if(!entity.obstacle.is_destructable) gui_add_obstacle(&entity.obstacle); break;
+            case EMPTY_SPACE: break;
         }
     }
 }
