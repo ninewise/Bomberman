@@ -14,13 +14,6 @@ void init_player(Player* player) {
     player->remaining_bombs = 10;
 }
 
-void move_player(Player* player, int moves[4], Entity** entities) {
-    Walker walker;
-    walker.player = *player;
-    move_walker(&walker, moves, entities, PLAYER_MOVEMENT_INCREMENT);
-    *player = walker.player;
-}
-
 void render_player(Player* player) {
     gui_add_player(player);
 }

@@ -4,12 +4,10 @@
 
 #include "blast_it.h"
 
-typedef union Walker {
+typedef struct Walker {
     int x;
     int y;
     ORIENTATION orientation;
-    Player player;
-    Enemy enemy;
 } Walker;
 
 /**

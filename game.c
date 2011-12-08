@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "walker.h"
 
 void init_game(Game* game, int level_nr) {
     init_level(&game->level, generate_level_info(level_nr));
@@ -24,7 +25,7 @@ void do_game_loop(Game * game) {
 		check_game_input(game);
 		update_game(game);
 		render_game(game);
-        usleep(7); // TODO verwijderen voor op windows
+        usleep(50000); // TODO verwijderen voor op windows
         stop = (game->enemies_left == 0 || game->game_over == 0 || gui_is_terminated());
 	}
 
@@ -69,7 +70,13 @@ void destroy_game(Game * game) {
 
 void do_player_movement(Game * game) {
     if(game->input.hasMoved) {
-        move_player(&game->player, game->input.moves, game->level.entities);
+        Walker walker = {game->player.x, game->player.y, game->player.orientation};
+        move_walker(&walker, game->input.moves, game->level.entities, PLAYER_MOVEMENT_INCREMENT);
+
+        game->player.x = walker.x;
+        game->player.y = walker.y;
+        game->player.orientation = walker.orientation;
+
     }
 }
 

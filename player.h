@@ -11,12 +11,6 @@
 void init_player(Player* player);
 
 /**
- * Verplaatst de player volgens de verplaatsing meegeven in moves. Houdt
- * rekening met de botsingen met de objecten in het level.
- */
-void move_player(Player* player, int moves[4], Entity** entities);
-
-/**
  * Tekent de speler op het scherm.
  */
 void render_player(Player* player);
