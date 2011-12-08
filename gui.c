@@ -44,6 +44,7 @@ void gui_initialize()
 {
 	/* create VM */
 	env = create_vm(&jvm);
+
 	if(env == NULL) {
 		printf("gui error: JVM environment is NULL!!.\n");
 		return;
@@ -51,7 +52,7 @@ void gui_initialize()
 
 	/* Initialize JNI vars */
 	clsMain = (*env)->NewGlobalRef(env, (*env)->FindClass(env, "blastit/Main"));
-
+	printf("%s",clsMain);
 	if(clsMain != NULL) {
 		setLevelInfo = (*env)->GetStaticMethodID(env, clsMain,"setLevelInfo","(IIII)V");
 		drawBuffer = (*env)->GetStaticMethodID(env, clsMain,"drawBuffer","([Ljava/lang/String;)V");

@@ -3,16 +3,22 @@
 #include "game.h"
 #include "level.h"
 #include "player.h"
+#include "enemy.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "walker.h"
 
 void init_game(Game* game, int level_nr) {
+    int i;
+
     init_level(&game->level, generate_level_info(level_nr));
     init_player(&game->player);
     game->enemies_left = game->level.level_info.nr_of_enemies;
     game->enemies = calloc(game->enemies_left, sizeof(Enemy));
+    for( i = 0; i < game->enemies_left; i++ ){
+		init_enemy(&game->enemies[i]);
+    }
     game->score = 0;
 }
 
@@ -57,8 +63,13 @@ void update_game(Game * game)
 }
 
 void render_game(Game * game) {
+	int i;
+	
     render_level(&game->level);
     render_player(&game->player);
+	for( i = 0; i < game->enemies_left; i++ ){
+		render_enemy(&game->enemies[i]);
+    }
     gui_draw_buffer();
 }
 
