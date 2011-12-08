@@ -16,6 +16,11 @@ void init_player(Player* player);
 void render_player(Player* player);
 
 /**
+ * Laat de speler een bom plaatsen op zijn huidige locatie.
+ */
+void player_drop_bomb(Player * player, Entity** entities);
+
+/**
  * Verwijdert de speler uit het geheugen.
  */
 void destroy_player(Player* player);
