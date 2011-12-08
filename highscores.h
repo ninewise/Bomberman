@@ -21,7 +21,7 @@ typedef struct Highscore
 typedef struct Highscorelist
 {
 	Highscore* list;
-	int* size;
+	unsigned int* size;
 } Highscorelist;
 
 #endif
