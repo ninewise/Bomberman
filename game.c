@@ -25,7 +25,6 @@ void do_game_loop(Game * game) {
 		check_game_input(game);
 		update_game(game);
 		render_game(game);
-        usleep(50000); // TODO verwijderen voor op windows
         stop = (game->enemies_left == 0 || game->game_over == 0 || gui_is_terminated());
 	}
 
