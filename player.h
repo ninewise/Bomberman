@@ -6,7 +6,7 @@
 #include "level.h"
 
 /**
- * Initialiseerd de speler, met dummy coordinaten en dergelijke.
+ * Initialiseert de speler, met dummy coordinaten en dergelijke.
  */
 void init_player(Player* player);
 
@@ -16,7 +16,7 @@ void init_player(Player* player);
 void render_player(Player* player);
 
 /**
- * Verwijderd de speler uit het geheugen.
+ * Verwijdert de speler uit het geheugen.
  */
 void destroy_player(Player* player);
 
