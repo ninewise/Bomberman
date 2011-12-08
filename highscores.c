@@ -4,19 +4,24 @@
 
 Highscorelist *list;
 
+
 void load_highscores()
 {	
+    // Open highscore bestand, alloceer ruimte voor de lijst.	
 	FILE * hs = fopen(HIGHSCORE_FILE,"rb+");
-    list = malloc(sizeof(Highscorelist));
-	list->size = malloc(sizeof(int));
+	list = malloc(sizeof(Highscorelist));
+	list->size = malloc(sizeof(unsigned int));
+    // Als er al een bestand was, lees het aantal highscores in, en sla de
+    // huidige highscores op in de lijst.
 	if(hs){
-		fread(list->size,sizeof(int),1,hs);
+		fread(list->size,sizeof(unsigned int),1,hs);
 		list->list = malloc(*list->size * sizeof(Highscore));
 		fread(list->list,sizeof(Highscore),*list->size,hs);
 		fclose(hs);
 	} else {
+    // anders initialiseren we size op 0 en wijzen plaats toe voor de lijst	
 		*list->size = 0;
-        list->list = calloc(0, 0);
+       		 list->list = calloc(0, 0);
 	}
 }
 
@@ -57,6 +62,7 @@ void check_highscore_entry(int score)
 
 void display_highscores()
 {
+    // Overloop lijst, print highscores
 	int i;
 	printf("\n HIGHSCORELIST \n");
 	for( i = 0 ; i < *list->size ; i++){
@@ -68,7 +74,7 @@ void save_highscores()
 {
 	FILE* hs = fopen(HIGHSCORE_FILE,"wb");
     if(hs) {
-        fwrite(list->size,sizeof(int),1,hs);
+        fwrite(list->size,sizeof(unsigned int),1,hs);
         fwrite(list->list,sizeof(Highscore),*list->size,hs);
         fclose(hs);
     }
