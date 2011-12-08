@@ -18,4 +18,17 @@ void render_player(Player* player) {
     gui_add_player(player);
 }
 
+void player_drop_bomb(Player * player, Entity** entities) {
+    Entity bomb_entity;
+    Bomb bomb = {
+        BOMB,
+        player->x/TILE_SIZE * TILE_SIZE,
+        player->y/TILE_SIZE * TILE_SIZE,
+        BOMB_TICKS
+    };
+    bomb_entity.bomb = bomb;
+    
+    entities[player->x / TILE_SIZE][player->y / TILE_SIZE] = bomb_entity;
+}
+
 void destroy_player(Player* player) {}

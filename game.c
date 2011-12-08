@@ -69,8 +69,13 @@ void destroy_game(Game * game) {
 
 void do_player_movement(Game * game) {
     if(game->input.hasMoved) {
-        Walker walker = {game->player.x, game->player.y, game->player.orientation};
-        move_walker(&walker, game->input.moves, game->level.entities, PLAYER_MOVEMENT_INCREMENT);
+        Walker walker = {
+            game->player.x,
+            game->player.y,
+            game->player.orientation
+        };
+        move_walker(&walker, game->input.moves, game->level.entities,
+            PLAYER_MOVEMENT_INCREMENT);
 
         game->player.x = walker.x;
         game->player.y = walker.y;
@@ -86,8 +91,10 @@ void process_bonus_items(Game * game) {
 }
 
 void process_bombs(Game * game) {
-    if(game->input.dropBomb) {
-        gui_set_bombs_left(game->player.remaining_bombs--);
+    // Als de speler een bom gelegd heeft, en de speler heeft nog bommen ter
+    // beschikking, plaatsen we een nieuwe bom.
+    if(game->input.dropBomb && game->player.remaining_bombs > 0) {
+        player_drop_bomb(&game->player, game->level.entities);
     }
 }
 

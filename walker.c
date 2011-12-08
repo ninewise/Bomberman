@@ -28,19 +28,15 @@ void move_walker(Walker* walker, int moves[4], Entity** entities, int distance) 
     if((nx<=ox && entities[(nx-dx)/TILE_SIZE][(ny-dy)/TILE_SIZE].type != EMPTY_SPACE)
     || (nx>=ox && entities[(nx+dx)/TILE_SIZE][(ny-dy)/TILE_SIZE].type != EMPTY_SPACE)
     || (nx<=ox && entities[(nx-dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE)
-    || (nx>=ox && entities[(nx+dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE)) {
+    || (nx>=ox && entities[(nx+dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE))
         nx = ox;
-        printf("hclash!");
-    }
 
     // Eveneens de verticale.
     if((ny<=oy && entities[(nx-dx)/TILE_SIZE][(ny-dy)/TILE_SIZE].type != EMPTY_SPACE)
     || (ny>=oy && entities[(nx-dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE)
     || (ny<=oy && entities[(nx+dx)/TILE_SIZE][(ny-dy)/TILE_SIZE].type != EMPTY_SPACE)
-    || (ny>=oy && entities[(nx+dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE)) {
+    || (ny>=oy && entities[(nx+dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE))
         ny = oy;
-        printf("vclash!");
-    }
 
     // Tenslotte maken we dit de nieuwe positie.
     walker->x = nx - TILE_SIZE/2;
