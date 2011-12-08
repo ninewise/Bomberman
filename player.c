@@ -24,7 +24,10 @@ void player_drop_bomb(Player * player, Entity** entities) {
         BOMB,
         player->x/TILE_SIZE * TILE_SIZE,
         player->y/TILE_SIZE * TILE_SIZE,
-        BOMB_TICKS
+        // Een kleine kunstgreep: We houden de ticks_left negatief zolang de
+        // speler bovenop de bom staat. Dan kunnen we de speler er over laten
+        // lopen.
+        -BOMB_TICKS
     };
     bomb_entity.bomb = bomb;
 

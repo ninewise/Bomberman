@@ -3,6 +3,7 @@
 #include "level.h"
 #include "blast_it.h"
 #include "player.h"
+#include "entity.h"
 
 void move_walker(Walker* walker, int moves[4], Entity** entities, int distance) {
     // We translateren de walker naar het midden van de onderste helft van het
@@ -25,17 +26,17 @@ void move_walker(Walker* walker, int moves[4], Entity** entities, int distance) 
     // We lossen horizontale collisions met entiteiten op. Dit door te kijken
     // naar de vier hoeken als we horizontaal bewegen (en dit dan horizontaal
     // te corrigeren).
-    if((nx<=ox && entities[(nx-dx)/TILE_SIZE][(ny-dy)/TILE_SIZE].type != EMPTY_SPACE)
-    || (nx>=ox && entities[(nx+dx)/TILE_SIZE][(ny-dy)/TILE_SIZE].type != EMPTY_SPACE)
-    || (nx<=ox && entities[(nx-dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE)
-    || (nx>=ox && entities[(nx+dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE))
+    if((nx <= ox && !is_walkable(entities, nx - dx, ny - dy))
+    || (nx >= ox && !is_walkable(entities, nx + dx, ny - dy))
+    || (nx <= ox && !is_walkable(entities, nx - dx, ny + dy))
+    || (nx >= ox && !is_walkable(entities, nx + dx, ny + dy)))
         nx = ox;
 
     // Eveneens de verticale.
-    if((ny<=oy && entities[(nx-dx)/TILE_SIZE][(ny-dy)/TILE_SIZE].type != EMPTY_SPACE)
-    || (ny>=oy && entities[(nx-dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE)
-    || (ny<=oy && entities[(nx+dx)/TILE_SIZE][(ny-dy)/TILE_SIZE].type != EMPTY_SPACE)
-    || (ny>=oy && entities[(nx+dx)/TILE_SIZE][(ny+dy)/TILE_SIZE].type != EMPTY_SPACE))
+    if((ny <= oy && !is_walkable(entities, nx - dx, ny - dy))
+    || (ny >= oy && !is_walkable(entities, nx - dx, ny + dy))
+    || (ny <= oy && !is_walkable(entities, nx + dx, ny - dy))
+    || (ny >= oy && !is_walkable(entities, nx + dx, ny + dy)))
         ny = oy;
 
     // Tenslotte maken we dit de nieuwe positie.

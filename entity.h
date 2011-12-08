@@ -10,4 +10,6 @@ void put_powerup(Entity** entities, int x, int y, POWERUP_TYPE type);
 void put_obstacle(Entity** entities, int x, int y, int is_destructable);
 void put_empty_space(Entity** entities, int x, int y);
 
+int is_walkable(Entity** entities, int x, int y);
+
 #endif

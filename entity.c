@@ -41,3 +41,10 @@ void put_empty_space(Entity** entities, int x, int y) {
     entities[x][y].empty_space.y = y * TILE_SIZE;
 }
 
+int is_walkable(Entity** entities, int x, int y) {
+    Entity entity = entities[x / TILE_SIZE][y / TILE_SIZE];
+    return (
+        (entity.type == EMPTY_SPACE) ||
+        (entity.type == BOMB && entity.bomb.ticks_left < 0)
+    );
+}
