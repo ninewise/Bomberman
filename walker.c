@@ -8,14 +8,14 @@
 void move_walker(Walker* walker, int moves[4], Entity** entities, int distance) {
     // We translateren de walker naar het midden van de onderste helft van het
     // hokje, wat het gemakkelijker maakt om geldige plaatsen te berekenen.
-    int ox = walker->x + PLAYER_TRANSLATE_X;   // De oude x-coordinaat;
-    int oy = walker->y + PLAYER_TRANSLATE_Y; // De oude y-coordinaat;
+    int ox = walker->x + TILE_SIZE/2;   // De oude x-coordinaat;
+    int oy = walker->y + TILE_SIZE/2; // De oude y-coordinaat;
     int nx = ox;                        // De nieuwe x-coordinaat;
     int ny = oy;                        // De nieuwe y-coordinaat;
 
     // De afstand die de walker van de randen/obstakels moet blijven.
-    int dx = TILE_SIZE / 3;
-    int dy = TILE_SIZE / 4;
+    int dx = TILE_SIZE / 2 - 1;
+    int dy = TILE_SIZE / 2 - 1;
 
     // We berekenen de nieuwe kandidaatplaats.
     if(moves[0]) ny -= distance;
@@ -40,8 +40,8 @@ void move_walker(Walker* walker, int moves[4], Entity** entities, int distance) 
         ny = oy;
 
     // Tenslotte maken we dit de nieuwe positie.
-    walker->x = nx - TILE_SIZE/2;
-    walker->y = ny - 3*TILE_SIZE/4;
+    walker->x = nx - TILE_SIZE / 2;
+    walker->y = ny - TILE_SIZE / 2;
 
     // Nu nog de orientatie veranderen.
     if(ox == nx) walker->orientation = (oy > ny) ? NORTH : SOUTH;
