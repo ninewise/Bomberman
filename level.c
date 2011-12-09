@@ -3,17 +3,21 @@
 #include "gui.h"
 #include <stdlib.h>
 #include "entity.h"
+#include <math.h>
 
 LevelInfo generate_level_info(int level_nr)
 {
 	LevelInfo level_info;
-	level_info.width = 21;
-	level_info.height = 13;
+	level_info.width = rand() % 10 + level_nr + 15;
+	level_info.height = level_info.width * 3/4;
 	level_info.level_nr = level_nr;
-	level_info.realm = CLASSIC;
-	level_info.fill_ratio = 0.20;
-	level_info.nr_of_enemies = 5;
-	level_info.spawn_boss = 1;
+	level_info.realm = ((level_nr - 1) % 5) + 1;
+	level_info.fill_ratio = 0.05 + 1/2 * log(level_nr);
+	level_info.nr_of_enemies = 3 + level_nr * 5/4 * log(level_nr);
+	level_info.spawn_boss = level_nr / 5;
+    if( (rand() % 5) + 1 < ((level_nr - 1) % 5) + 1 ){
+        level_info.spawn_boss += (rand() % level_nr) * 1/5 * log(level_nr);
+    }
 	level_info.bonus_spawn_ratio = 1;
 	return level_info;
 }
