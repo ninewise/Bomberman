@@ -7,7 +7,7 @@
 /**
  * Initialiseert de enemy, wijst random locatie toe etc
  */
-void init_enemy(Enemy* enemy);
+void init_enemy(Enemy* enemy, Level level);
 
 /**
  * Tekent de enemy op het scherm.

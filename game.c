@@ -17,7 +17,7 @@ void init_game(Game* game, int level_nr) {
     game->enemies_left = game->level.level_info.nr_of_enemies;
     game->enemies = calloc(game->enemies_left, sizeof(Enemy));
     for( i = 0; i < game->enemies_left; i++ ){
-		init_enemy(&game->enemies[i]);
+		init_enemy(&game->enemies[i],&game->level);
     }
     game->score = 0;
 }
