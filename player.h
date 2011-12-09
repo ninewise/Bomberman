@@ -16,6 +16,12 @@ void init_player(Player* player);
 void render_player(Player* player);
 
 /**
+ * Probeert de speler te verplaatsen in de richtingen gegeven door moves, en
+ * houdt daarbij rekening met botsingen in de entiteiten.
+ */
+void move_player(Player* player, int moves[4], Entity** entities);
+
+/**
  * Laat de speler een bom plaatsen op zijn huidige locatie.
  */
 void player_drop_bomb(Player * player, Entity** entities);

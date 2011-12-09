@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "walker.h"
 
 void init_game(Game* game, int level_nr) {
     int i;
@@ -82,17 +81,7 @@ void destroy_game(Game * game) {
 
 void do_player_movement(Game * game) {
     if(game->input.hasMoved) {
-        Walker walker = {
-            game->player.x,
-            game->player.y,
-            game->player.orientation
-        };
-        move_walker(&walker, game->input.moves, game->level.entities,
-            PLAYER_MOVEMENT_INCREMENT);
-
-        game->player.x = walker.x;
-        game->player.y = walker.y;
-        game->player.orientation = walker.orientation;
+        move_player(&game->player, game->input.moves, game->level.entities);
     }
 }
 
@@ -124,8 +113,8 @@ void process_bombs(Game * game) {
             // player of enemy meer op staat.
             int occupied = 0;   // Of er al dan niet een vijand of speler op deze bom staat.
             occupied = (occupied) ? occupied :
-                        (game->player.x / TILE_SIZE == bomb.x / TILE_SIZE
-                      && game->player.y / TILE_SIZE == bomb.y / TILE_SIZE);
+                        ((game->player.x + TILE_SIZE/2) / TILE_SIZE == bomb.x / TILE_SIZE
+                      && (game->player.y + TILE_SIZE/2) / TILE_SIZE == bomb.y / TILE_SIZE);
             for(e = 0; e < game->level.level_info.nr_of_enemies; e++)
                 occupied = (occupied) ? occupied :
                     (game->enemies[e].x / TILE_SIZE == bomb.x / TILE_SIZE &&
