@@ -26,17 +26,17 @@ void move_walker(Walker* walker, int moves[4], Entity** entities, int distance) 
     // We lossen horizontale collisions met entiteiten op. Dit door te kijken
     // naar de vier hoeken als we horizontaal bewegen (en dit dan horizontaal
     // te corrigeren).
-    if((nx <= ox && !is_walkable(entities, nx - dx, ny - dy))
-    || (nx >= ox && !is_walkable(entities, nx + dx, ny - dy))
-    || (nx <= ox && !is_walkable(entities, nx - dx, ny + dy))
-    || (nx >= ox && !is_walkable(entities, nx + dx, ny + dy)))
+    if((nx <= ox && !is_abs_walkable(entities, nx - dx, ny - dy))
+    || (nx >= ox && !is_abs_walkable(entities, nx + dx, ny - dy))
+    || (nx <= ox && !is_abs_walkable(entities, nx - dx, ny + dy))
+    || (nx >= ox && !is_abs_walkable(entities, nx + dx, ny + dy)))
         nx = ox;
 
     // Eveneens de verticale.
-    if((ny <= oy && !is_walkable(entities, nx - dx, ny - dy))
-    || (ny >= oy && !is_walkable(entities, nx - dx, ny + dy))
-    || (ny <= oy && !is_walkable(entities, nx + dx, ny - dy))
-    || (ny >= oy && !is_walkable(entities, nx + dx, ny + dy)))
+    if((ny <= oy && !is_abs_walkable(entities, nx - dx, ny - dy))
+    || (ny >= oy && !is_abs_walkable(entities, nx - dx, ny + dy))
+    || (ny <= oy && !is_abs_walkable(entities, nx + dx, ny - dy))
+    || (ny >= oy && !is_abs_walkable(entities, nx + dx, ny + dy)))
         ny = oy;
 
     // Tenslotte maken we dit de nieuwe positie.
