@@ -101,7 +101,7 @@ void process_bonus_items(Game * game) {
 }
 
 void process_bombs(Game * game) {
-    int i, j;
+    int i, j, e;
     // Als de speler een bom gelegd heeft, en de speler heeft nog bommen ter
     // beschikking, plaatsen we een nieuwe bom.
     if(game->input.dropBomb && game->player.remaining_bombs > 0) {
@@ -109,13 +109,31 @@ void process_bombs(Game * game) {
     }
     for(i = 0; i < game->level.level_info.width; i++) for(j = 0; j < game->level.level_info.height; j++) {
         if(game->level.entities[i][j].type == BOMB) {
-            int ticks_left = game->level.entities[i][j].bomb.ticks_left;
-            if(ticks_left < 0) game->level.entities[i][j].bomb.ticks_left++;
-            else game->level.entities[i][j].bomb.ticks_left--;
-            if(ticks_left == 0) {
+            Bomb bomb = game->level.entities[i][j].bomb;
+            // We brengen de ticks 1 keer dichter bij 0.
+            if(bomb.ticks_left < 0) bomb.ticks_left++;
+            else bomb.ticks_left--;
+
+            // We zorgen dat bommen niet langer beloopbaar zijn zodra er geen
+            // player of enemy meer op staat.
+            int occupied = 0;   // Of er al dan niet een vijand of speler op deze bom staat.
+            occupied = (occupied) ? occupied :
+                        ((game->player.x+PLAYER_TRANSLATE_X) / TILE_SIZE == bomb.x / TILE_SIZE
+                      && (game->player.y+PLAYER_TRANSLATE_Y) / TILE_SIZE == bomb.y / TILE_SIZE);
+            for(e = 0; e < game->level.level_info.nr_of_enemies; e++)
+                occupied = (occupied) ? occupied :
+                    (game->enemies[e].x / TILE_SIZE == bomb.x / TILE_SIZE &&
+                     game->enemies[e].y / TILE_SIZE == bomb.y / TILE_SIZE);
+            if(!occupied && bomb.ticks_left < 0) bomb.ticks_left *= -1;
+
+            // En we ontploffen als we 0 zijn.
+            if(bomb.ticks_left == 0) {
                 EmptySpace space = {EMPTY_SPACE, i * TILE_SIZE, j * TILE_SIZE};
                 game->level.entities[i][j].empty_space = space;
             }
+
+            // De ticks van de bom in entities moet ook aangepast worden.
+            game->level.entities[i][j].bomb.ticks_left = bomb.ticks_left;
         }
     }
 }
