@@ -91,7 +91,6 @@ void do_player_movement(Game * game) {
         game->player.x = walker.x;
         game->player.y = walker.y;
         game->player.orientation = walker.orientation;
-
     }
 }
 
@@ -102,10 +101,22 @@ void process_bonus_items(Game * game) {
 }
 
 void process_bombs(Game * game) {
+    int i, j;
     // Als de speler een bom gelegd heeft, en de speler heeft nog bommen ter
     // beschikking, plaatsen we een nieuwe bom.
     if(game->input.dropBomb && game->player.remaining_bombs > 0) {
         player_drop_bomb(&game->player, game->level.entities);
+    }
+    for(i = 0; i < game->level.level_info.width; i++) for(j = 0; j < game->level.level_info.height; j++) {
+        if(game->level.entities[i][j].type == BOMB) {
+            int ticks_left = game->level.entities[i][j].bomb.ticks_left;
+            if(ticks_left < 0) game->level.entities[i][j].bomb.ticks_left++;
+            else game->level.entities[i][j].bomb.ticks_left--;
+            if(ticks_left == 0) {
+                EmptySpace space = {EMPTY_SPACE, i * TILE_SIZE, j * TILE_SIZE};
+                game->level.entities[i][j].empty_space = space;
+            }
+        }
     }
 }
 
