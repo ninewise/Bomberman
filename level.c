@@ -60,15 +60,21 @@ void init_level(Level * level, LevelInfo level_info) {
 }
 
 void render_level(Level * level) {
-    int i, j;
+    int i, j, a;
+    // Placing entities.
     for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++) {
         Entity entity = level->entities[i][j];
         switch(entity.type) {
-            case BOMB: gui_add_bomb(&entity.bomb); break;
-            case EXPLOSION: break;
-            case POWERUP: gui_add_powerup(&entity.powerup); break;
-            case OBSTACLE: if(!entity.obstacle.is_destructable) gui_add_obstacle(&entity.obstacle); break;
             case EMPTY_SPACE: break;
+            case BOMB: gui_add_bomb(&entity.bomb); break;
+            case OBSTACLE: if(!entity.obstacle.is_destructable) gui_add_obstacle(&entity.obstacle); break;
+            case EXPLOSION: break; // Explosions worden pas achteraf getekend, over de rest.
+            case POWERUP: gui_add_powerup(&entity.powerup); break;
+        }
+    }
+    for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++) {
+        Entity entity = level->entities[i][j];
+        if(entity.type == EXPLOSION) {
         }
     }
 }

@@ -128,8 +128,15 @@ void process_bombs(Game * game) {
 
             // En we ontploffen als we 0 zijn.
             if(bomb.ticks_left == 0) {
-                EmptySpace space = {EMPTY_SPACE, i * TILE_SIZE, j * TILE_SIZE};
-                game->level.entities[i][j].empty_space = space;
+                Explosion explosion = {
+                    EXPLOSION,
+                    bomb.x,
+                    bomb.y,
+                    {1,1,1,1},
+                    3,
+                    EXPLOSION_TICKS
+                };
+                game->level.entities[i][j].explosion = explosion;
             }
 
             // De ticks van de bom in entities moet ook aangepast worden.
