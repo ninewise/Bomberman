@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "functions.h"
+
+#define DECENTER(X)     ((X) - TILE_SIZE/2)
+#define CENTER(X)       ((X) + TILE_SIZE/2)
+#define TO_TILE(X)      ((X) / TILE_SIZE)
 
 void init_game(Game* game, int level_nr) {
     int i;
@@ -112,13 +117,13 @@ void process_bombs(Game * game) {
             // We zorgen dat bommen niet langer beloopbaar zijn zodra er geen
             // player of enemy meer op staat.
             int occupied = 0;   // Of er al dan niet een vijand of speler op deze bom staat.
-            occupied = (occupied) ? occupied :
-                        ((game->player.x + TILE_SIZE/2) / TILE_SIZE == bomb.x / TILE_SIZE
-                      && (game->player.y + TILE_SIZE/2) / TILE_SIZE == bomb.y / TILE_SIZE);
+            int tile1[2] = {game->player.x, game->player.y};
+            int tile2[2] = {bomb.x, bomb.y};
+            occupied = (occupied) ? occupied : tile_overlap(tile1, tile2);
             for(e = 0; e < game->level.level_info.nr_of_enemies; e++)
                 occupied = (occupied) ? occupied :
-                    (game->enemies[e].x / TILE_SIZE == bomb.x / TILE_SIZE &&
-                     game->enemies[e].y / TILE_SIZE == bomb.y / TILE_SIZE);
+                            (TO_TILE(game->enemies[e].x) == TO_TILE(bomb.x)
+                          && TO_TILE(game->enemies[e].y) == TO_TILE(bomb.y));
             if(!occupied && bomb.ticks_left < 0) bomb.ticks_left *= -1;
 
             // En we ontploffen als we 0 zijn.

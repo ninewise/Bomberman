@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include "entity.h"
 
+#define DECENTER(X)     ((X) - TILE_SIZE/2)
+#define CENTER(X)       ((X) + TILE_SIZE/2)
+#define TO_TILE(X)      ((X) / TILE_SIZE)
+
 void init_player(Player* player) {
     player->x = 1 * TILE_SIZE;
     player->y = 1 * TILE_SIZE;
@@ -21,8 +25,8 @@ void render_player(Player* player) {
 void move_player(Player* player, int moves[4], Entity** entities) {
     // We translateren de player naar het midden van de onderste helft van het
     // hokje, wat het gemakkelijker maakt om geldige plaatsen te berekenen.
-    int ox = player->x + TILE_SIZE/2;   // De oude x-coordinaat;
-    int oy = player->y + TILE_SIZE/2;   // De oude y-coordinaat;
+    int ox = CENTER(player->x);   // De oude x-coordinaat;
+    int oy = CENTER(player->y);   // De oude y-coordinaat;
     int nx = ox;                        // De nieuwe x-coordinaat;
     int ny = oy;                        // De nieuwe y-coordinaat;
 
@@ -64,8 +68,8 @@ void move_player(Player* player, int moves[4], Entity** entities) {
     }
 
     // Tenslotte maken we dit de nieuwe positie.
-    player->x = nx - TILE_SIZE / 2;
-    player->y = ny - TILE_SIZE / 2;
+    player->x = DECENTER(nx);
+    player->y = DECENTER(ny);
 
     // Nu nog de orientatie veranderen.
     if(ox == nx) player->orientation = (oy > ny) ? NORTH : SOUTH;
@@ -76,8 +80,10 @@ void player_drop_bomb(Player * player, Entity** entities) {
     Entity bomb_entity;
     Bomb bomb = {
         BOMB,
-        (player->x + TILE_SIZE/2)/TILE_SIZE * TILE_SIZE,
-        (player->y + TILE_SIZE/2)/TILE_SIZE * TILE_SIZE,
+        // We kijken naar het vakje waarboven het centrum van de speler ligt,
+        // en droppen de bom op de linkerbovenhoek daarvan.
+        CENTER(player->x)/TILE_SIZE * TILE_SIZE,
+        CENTER(player->y)/TILE_SIZE * TILE_SIZE,
         // Een kleine kunstgreep: We houden de ticks_left negatief zolang de
         // speler bovenop de bom staat. Dan kunnen we de speler er over laten
         // lopen.
@@ -85,7 +91,7 @@ void player_drop_bomb(Player * player, Entity** entities) {
     };
     bomb_entity.bomb = bomb;
 
-    entities[player->x / TILE_SIZE][player->y / TILE_SIZE] = bomb_entity;
+    entities[TO_TILE(CENTER(player->x))][TO_TILE(CENTER(player->y))] = bomb_entity;
 }
 
 void destroy_player(Player* player) {}
