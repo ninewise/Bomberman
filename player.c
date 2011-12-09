@@ -22,8 +22,8 @@ void player_drop_bomb(Player * player, Entity** entities) {
     Entity bomb_entity;
     Bomb bomb = {
         BOMB,
-        (player->x + PLAYER_TRANSLATE_X)/TILE_SIZE * TILE_SIZE,
-        (player->y + PLAYER_TRANSLATE_Y)/TILE_SIZE * TILE_SIZE,
+        player->x/TILE_SIZE * TILE_SIZE,
+        player->y/TILE_SIZE * TILE_SIZE,
         // Een kleine kunstgreep: We houden de ticks_left negatief zolang de
         // speler bovenop de bom staat. Dan kunnen we de speler er over laten
         // lopen.
@@ -31,7 +31,7 @@ void player_drop_bomb(Player * player, Entity** entities) {
     };
     bomb_entity.bomb = bomb;
 
-    entities[(player->x + PLAYER_TRANSLATE_X) / TILE_SIZE][(player->y + PLAYER_TRANSLATE_Y) / TILE_SIZE] = bomb_entity;
+    entities[player->x / TILE_SIZE][player->y / TILE_SIZE] = bomb_entity;
 }
 
 void destroy_player(Player* player) {}

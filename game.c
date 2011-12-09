@@ -124,8 +124,8 @@ void process_bombs(Game * game) {
             // player of enemy meer op staat.
             int occupied = 0;   // Of er al dan niet een vijand of speler op deze bom staat.
             occupied = (occupied) ? occupied :
-                        ((game->player.x+PLAYER_TRANSLATE_X) / TILE_SIZE == bomb.x / TILE_SIZE
-                      && (game->player.y+PLAYER_TRANSLATE_Y) / TILE_SIZE == bomb.y / TILE_SIZE);
+                        (game->player.x / TILE_SIZE == bomb.x / TILE_SIZE
+                      && game->player.y / TILE_SIZE == bomb.y / TILE_SIZE);
             for(e = 0; e < game->level.level_info.nr_of_enemies; e++)
                 occupied = (occupied) ? occupied :
                     (game->enemies[e].x / TILE_SIZE == bomb.x / TILE_SIZE &&
