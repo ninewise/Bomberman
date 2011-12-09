@@ -11,7 +11,7 @@ LevelInfo generate_level_info(int level_nr)
 	level_info.height = 13;
 	level_info.level_nr = level_nr;
 	level_info.realm = CLASSIC;
-	level_info.fill_ratio = 0.00;
+	level_info.fill_ratio = 0.20;
 	level_info.nr_of_enemies = 5;
 	level_info.spawn_boss = 1;
 	level_info.bonus_spawn_ratio = 1;

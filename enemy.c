@@ -30,7 +30,13 @@ void init_enemy(Enemy* enemy, Level* level){
 }
 
 void update_enemy(Enemy* enemy, Game* game){      
-    int tilex, tiley;    
+    int tilex, tiley, increment;    
+    
+    if(enemy->is_boss){
+        increment = BOSS_MOVEMENT_INCREMENT;
+    } else {
+        increment = ENEMY_MOVEMENT_INCREMENT;
+    }
 
     do {
         tilex = enemy->x;
@@ -44,10 +50,10 @@ void update_enemy(Enemy* enemy, Game* game){
         }
     } while ( !is_abs_walkable(game->level.entities, tilex, tiley) );
    
-    if( enemy->move_direction == NORTH ) enemy->y -= ENEMY_MOVEMENT_INCREMENT;	
-    if( enemy->move_direction == SOUTH ) enemy->y += ENEMY_MOVEMENT_INCREMENT;		
-    if( enemy->move_direction == EAST ) enemy->x += ENEMY_MOVEMENT_INCREMENT;		
-    if( enemy->move_direction == WEST ) enemy->x -= ENEMY_MOVEMENT_INCREMENT;	
+    if( enemy->move_direction == NORTH ) enemy->y -= increment;	
+    if( enemy->move_direction == SOUTH ) enemy->y += increment;		
+    if( enemy->move_direction == EAST ) enemy->x += increment;		
+    if( enemy->move_direction == WEST ) enemy->x -= increment;	
 
 }
 
