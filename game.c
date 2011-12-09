@@ -68,7 +68,9 @@ void render_game(Game * game) {
     render_level(&game->level);
     render_player(&game->player);
 	for( i = 0; i < game->enemies_left; i++ ){
-		render_enemy(&game->enemies[i]);
+		if( !game->enemies[i].is_dead ) {
+			render_enemy(&game->enemies[i]);
+		}
     }
     gui_draw_buffer();
 }
@@ -95,6 +97,10 @@ void do_player_movement(Game * game) {
 }
 
 void do_enemy_ai(Game * game) {
+	int i;
+	for ( i = 0; i < game->level.level_info.nr_of_enemies; i++ ){
+		update_enemy(&game->enemies[i]);
+	}
 }
 
 void process_bonus_items(Game * game) {

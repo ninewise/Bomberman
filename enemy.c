@@ -13,6 +13,7 @@ void init_enemy(Enemy* enemy, Level* level){
 	} while( (enemy->x < level->level_info.width * TILE_SIZE / 3 && enemy->y < level->level_info.height * TILE_SIZE / 3) 
 				|| !is_abs_walkable(level->entities, enemy->x, enemy->y) );
 	enemy->move_direction = rand() % 4;
+
 	if(level->level_info.spawn_boss){
 		enemy->is_boss = 1;
 		level->level_info.spawn_boss--;
@@ -21,6 +22,7 @@ void init_enemy(Enemy* enemy, Level* level){
 		enemy->is_boss = 0;
 		enemy->remaining_lives = 1;
 	}
+
 	enemy->is_dead = 0;
 	enemy->frozen = 0;
 }
