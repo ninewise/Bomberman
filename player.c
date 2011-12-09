@@ -4,7 +4,6 @@
 #include "level.h"
 #include "gui.h"
 #include <stdio.h>
-#include "walker.h"
 #include "entity.h"
 
 void init_player(Player* player) {
