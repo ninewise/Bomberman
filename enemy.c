@@ -8,12 +8,14 @@
 
 void init_enemy(Enemy* enemy, Level* level){
 	do{
-		enemy->x = rand() % level->levelinfo.width * TILE_SIZE;
-		enemy->y = rand() % level->levelinfo.height * TILE_SIZE;
-	} while( enemy->x < level->levelinfo.width * TILE_SIZE / 3 && enemy->y < level->levelinfo.height * TILE_SIZE / 3 && is_walkable(level.entities[enemy->x][enemy->y] );
+		enemy->x = rand() % (level->level_info.width - 1) * TILE_SIZE;
+		enemy->y = rand() % (level->level_info.height - 1) * TILE_SIZE;
+	} while( (enemy->x < level->level_info.width * TILE_SIZE / 3 && enemy->y < level->level_info.height * TILE_SIZE / 3) 
+				|| !is_abs_walkable(level->entities, enemy->x, enemy->y) );
 	enemy->move_direction = rand() % 4;
-	if(level->levelinfo.spawn_boss){
+	if(level->level_info.spawn_boss){
 		enemy->is_boss = 1;
+		level->level_info.spawn_boss--;
 		enemy->remaining_lives = 3;
 	} else {
 		enemy->is_boss = 0;
