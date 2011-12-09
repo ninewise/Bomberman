@@ -99,7 +99,7 @@ void do_player_movement(Game * game) {
 void do_enemy_ai(Game * game) {
 	int i;
 	for ( i = 0; i < game->level.level_info.nr_of_enemies; i++ ){
-		update_enemy(&game->enemies[i]);
+		update_enemy(&game->enemies[i], game);
 	}
 }
 
