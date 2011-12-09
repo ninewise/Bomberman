@@ -4,7 +4,7 @@
 #include "gui.h"
 #include <stdlib.h>
 #include "entity.h"
-#include "walker.h"
+#include <stdio.h>
 
 
 void init_enemy(Enemy* enemy, Level* level){
@@ -29,20 +29,26 @@ void init_enemy(Enemy* enemy, Level* level){
 	enemy->frozen = 0;
 }
 
-void update_enemy(Enemy* enemy, Game* game){
-	Walker walker = {
-    	enemy->x,  
-    	enemy->y,   
-		enemy->move_direction
-    };
+void update_enemy(Enemy* enemy, Game* game){      
+    int tilex, tiley;    
 
-	int	moves[4] = {0,0,0,0};	
+    do {
+        tilex = enemy->x;
+        tiley = enemy->y;
+        if ( enemy->x / TILE_SIZE * TILE_SIZE == enemy->x && enemy->y / TILE_SIZE * TILE_SIZE == enemy->y ){
+            if ( rand() % 10 < 4 ) enemy->move_direction = rand() % 4;
+            if( enemy->move_direction == NORTH ) tiley -= TILE_SIZE;
+            if( enemy->move_direction == SOUTH ) tiley += TILE_SIZE;		
+            if( enemy->move_direction == EAST ) tilex += TILE_SIZE;		
+            if( enemy->move_direction == WEST ) tilex -= TILE_SIZE;	
+        }
+    } while ( !is_abs_walkable(game->level.entities, tilex, tiley) );
+   
+    if( enemy->move_direction == NORTH ) enemy->y -= ENEMY_MOVEMENT_INCREMENT;	
+    if( enemy->move_direction == SOUTH ) enemy->y += ENEMY_MOVEMENT_INCREMENT;		
+    if( enemy->move_direction == EAST ) enemy->x += ENEMY_MOVEMENT_INCREMENT;		
+    if( enemy->move_direction == WEST ) enemy->x -= ENEMY_MOVEMENT_INCREMENT;	
 
-    move_walker(&walker, moves, game->level.entities, ENEMY_MOVEMENT_INCREMENT);
-
-    enemy->x = walker.x;
-    enemy->y = walker.y;
-    enemy->move_direction = walker.orientation;
 }
 
 void render_enemy(Enemy* enemy){

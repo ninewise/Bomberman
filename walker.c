@@ -15,7 +15,7 @@ void move_walker(Walker* walker, int moves[4], Entity** entities, int distance) 
 
     // De afstand die de walker van de randen/obstakels moet blijven.
     int dx = TILE_SIZE / 2 - 1;
-    int dy = TILE_SIZE / 2 - 1;
+    int dy = TILE_SIZE / 2 -1;
 
     // We berekenen de nieuwe kandidaatplaats.
     if(moves[0]) ny -= distance;
