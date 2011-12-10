@@ -121,10 +121,10 @@ void process_bombs(Game * game) {
             int tile1[2] = {game->player.x, game->player.y};
             int tile2[2] = {bomb.x, bomb.y};
             occupied = (occupied) ? occupied : tile_overlap(tile1, tile2);
-            for(e = 0; e < game->level.level_info.nr_of_enemies; e++)
-                occupied = (occupied) ? occupied :
-                            (TO_TILE(game->enemies[e].x) == TO_TILE(bomb.x)
-                          && TO_TILE(game->enemies[e].y) == TO_TILE(bomb.y));
+            for(e = 0; e < game->level.level_info.nr_of_enemies; e++) {
+                int etile[2] = {game->enemies[e].x, game->enemies[e].y};
+                occupied = (occupied) ? occupied : tile_overlap(tile1, etile);
+            }
             if(!occupied && bomb.ticks_left < 0) bomb.ticks_left *= -1;
 
             // En we ontploffen als we 0 zijn.
