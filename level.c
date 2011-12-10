@@ -48,9 +48,9 @@ void init_level(Level * level, LevelInfo level_info) {
         for(j = 0; j < level_info.height; j++) {
             // Het veld opvullen met entiteiten, te beginnen met vaste blokken.
             if(i == 0 || j == 0 || i+1 == level_info.width || j+1 == level_info.height || (i%2==0 && j%2==0)) {
-                put_obstacle(level->entities, i, j, 1);
-            } else if(rand() < ratio * (RAND_MAX+1u)) {
                 put_obstacle(level->entities, i, j, 0);
+            } else if(rand() % 100 < ratio * 100) {
+                put_obstacle(level->entities, i, j, 1);
             } else {
                 put_empty_space(level->entities, i, j);
             }
@@ -71,7 +71,7 @@ void render_level(Level * level) {
         switch(entity.type) {
             case EMPTY_SPACE: break;
             case BOMB: gui_add_bomb(&entity.bomb); break;
-            case OBSTACLE: if(!entity.obstacle.is_destructable) gui_add_obstacle(&entity.obstacle); break;
+            case OBSTACLE: if(entity.obstacle.is_destructable) gui_add_obstacle(&entity.obstacle); break;
             case EXPLOSION: break; // Explosions worden pas achteraf getekend, over de rest.
             case POWERUP: gui_add_powerup(&entity.powerup); break;
         }
@@ -84,10 +84,30 @@ void render_level(Level * level) {
             gui_add_explosion_tile(exp.x, exp.y, 42);
             // De explosies in elke richting uitbereiden.
             while(a > 0) {
+                // Als de explosie boven een non-destructable plaats zou vinden,
+                // verhinderen we dit.
+                if(level->entities[i][j - a].type == OBSTACLE
+                &&!level->entities[i][j - a].obstacle.is_destructable) spread[0] = 0;
+                if(level->entities[i][j + a].type == OBSTACLE
+                &&!level->entities[i][j + a].obstacle.is_destructable) spread[1] = 0;
+                if(level->entities[i + a][j].type == OBSTACLE
+                &&!level->entities[i + a][j].obstacle.is_destructable) spread[2] = 0;
+                if(level->entities[i - a][j].type == OBSTACLE
+                &&!level->entities[i - a][j].obstacle.is_destructable) spread[3] = 0;
+
+                // Als de explosie zich nog in de richting verspreid, tekenen we ze ook.
                 if(spread[0]) gui_add_explosion_tile(exp.x, exp.y - a * TILE_SIZE, 42);
                 if(spread[1]) gui_add_explosion_tile(exp.x, exp.y + a * TILE_SIZE, 42);
                 if(spread[2]) gui_add_explosion_tile(exp.x + a * TILE_SIZE, exp.y, 42);
                 if(spread[3]) gui_add_explosion_tile(exp.x - a * TILE_SIZE, exp.y, 42);
+
+                // Als we een obstacle tegen komen, stoppen we de explosie.
+                if(level->entities[i][j - a].type == OBSTACLE) spread[0] = 0;
+                if(level->entities[i][j + a].type == OBSTACLE) spread[1] = 0;
+                if(level->entities[i + a][j].type == OBSTACLE) spread[2] = 0;
+                if(level->entities[i - a][j].type == OBSTACLE) spread[3] = 0;
+
+                // 
                 a--;
             }
     }

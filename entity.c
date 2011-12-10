@@ -2,6 +2,9 @@
 #include "blast_it.h"
 #include "entity.h"
 
+#define DIV(X)  ((X) / TILE_SIZE)
+#define MOD(X)  ((X) % TILE_SIZE)
+
 void put_bomb(Entity** entities, int x, int y, int ticks_left) {
     entities[x][y].type = BOMB;
     entities[x][y].bomb.x = x * TILE_SIZE;
@@ -42,7 +45,14 @@ void put_empty_space(Entity** entities, int x, int y) {
 }
 
 int is_abs_walkable(Entity** entities, int x, int y) {
-    return is_walkable(entities[x / TILE_SIZE][y / TILE_SIZE]);
+    int walkable = is_walkable(entities[DIV(x)][DIV(y)]);
+    if(MOD(x) != 0 && MOD(y) != 0)
+        walkable = walkable && is_walkable(entities[DIV(x) + 1][DIV(y) + 1]);
+    if(MOD(x) != 0)
+        walkable = walkable && is_walkable(entities[DIV(x) + 1][DIV(y)]);
+    if(MOD(y) != 0)
+        walkable = walkable && is_walkable(entities[DIV(x)][DIV(y) + 1]);
+    return walkable;
 }
 
 int is_walkable(Entity entity) {

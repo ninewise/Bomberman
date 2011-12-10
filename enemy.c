@@ -6,6 +6,8 @@
 #include "entity.h"
 #include <stdio.h>
 
+#define ABSTILE(X)  ((X) / TILE_SIZE * TILE_SIZE)
+#define TILE(X)     ((X) / TILE_SIZE)
 
 void init_enemy(Enemy* enemy, Level* level){
 	do{
@@ -32,30 +34,38 @@ void init_enemy(Enemy* enemy, Level* level){
 void update_enemy(Enemy* enemy, Game* game){      
     int tilex, tiley, increment, count = 0;
     
-    if(enemy->is_boss){
-        increment = BOSS_MOVEMENT_INCREMENT;
-    } else {
-        increment = ENEMY_MOVEMENT_INCREMENT;
+    if(enemy->is_boss) increment = BOSS_MOVEMENT_INCREMENT;
+    else increment = ENEMY_MOVEMENT_INCREMENT;
+
+    // Als de vijand mooi op een tegel staat, geven we hem een nieuwe richting.
+    if(ABSTILE(enemy->x) == enemy->x && ABSTILE(enemy->y) == enemy->y) {
+        // Een array die bijhoudt in welke richtingen de vijand kan bewegen.
+        int walkable[4] = {
+            is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y) - 1]),
+            is_walkable(game->level.entities[TILE(enemy->x) + 1][TILE(enemy->y)]),
+            is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y) + 1]),
+            is_walkable(game->level.entities[TILE(enemy->x) - 1][TILE(enemy->y)])
+        };
+        do {
+            // Met een kans van 4/10 kiezen we een nieuwe richting voor de vijand.
+            if(rand() % 10 < 4) enemy->move_direction = rand() % 4;
+            count++;
+        } while(!walkable[enemy->move_direction] && count < 10);
     }
 
-    do {
-        tilex = enemy->x;
-        tiley = enemy->y;
-        if ( enemy->x / TILE_SIZE * TILE_SIZE == enemy->x && enemy->y / TILE_SIZE * TILE_SIZE == enemy->y ){
-            if ( rand() % 10 < 4 ) enemy->move_direction = rand() % 4;
-            if( enemy->move_direction == NORTH ) tiley -= TILE_SIZE;
-            if( enemy->move_direction == SOUTH ) tiley += TILE_SIZE;		
-            if( enemy->move_direction == EAST ) tilex += TILE_SIZE;		
-            if( enemy->move_direction == WEST ) tilex -= TILE_SIZE;	
-        }
-    } while(!is_abs_walkable(game->level.entities, tilex, tiley) && count++ < 10);
-    if(count == 10) increment = 0;
-   
-    if( enemy->move_direction == NORTH ) enemy->y -= increment;	
-    if( enemy->move_direction == SOUTH ) enemy->y += increment;		
-    if( enemy->move_direction == EAST ) enemy->x += increment;		
-    if( enemy->move_direction == WEST ) enemy->x -= increment;	
+    tiley = enemy->y;
+    tilex = enemy->x;
 
+    if(count == 10); // De vijand zit hoogstwaarschijnlijk vast, we doen niets.
+    else if(enemy->move_direction == NORTH) tiley -= increment;	
+    else if(enemy->move_direction == SOUTH) tiley += increment;		
+    else if(enemy->move_direction == EAST) tilex += increment;		
+    else if(enemy->move_direction == WEST) tilex -= increment;	
+
+    if(is_abs_walkable(game->level.entities, tilex, tiley)) {
+        enemy->y = tiley;
+        enemy->x = tilex;
+    } else printf("can't go to (%d,%d) (%d,%d) from (%d,%d) (%d,%d)\n", tilex, tiley, TILE(tilex), TILE(tiley), enemy->x, enemy->y, TILE(enemy->x), TILE(enemy->y));
 }
 
 void render_enemy(Enemy* enemy){
