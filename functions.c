@@ -14,7 +14,7 @@ int rectangle_overlap(int rect1[4], int rect2[4]) {
     int i;
     for(i = 0; i < 8; i+=2) overlap = overlap || (
         rect1[0] <= corners[ i ] && corners[ i ] <= rect1[2] &&
-        rect1[1] <= corners[i+1] && corners[i+1] <= rect1[2] );
+        rect1[1] <= corners[i+1] && corners[i+1] <= rect1[3] );
     return overlap;
 }
 
