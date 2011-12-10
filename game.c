@@ -130,7 +130,7 @@ void process_bombs(Game * game) {
             // En we ontploffen als we 0 zijn.
             if(bomb.ticks_left == 0) {
                 int spread[4] = {1,1,1,1};
-                put_explosion(game->level.entities, i, j, spread, 3, EXPLOSION_TICKS);
+                put_explosion(game->level.entities, i, j, spread, game->player.current_bomb_power, EXPLOSION_TICKS);
             }
 
             // De ticks van de bom in entities moet ook aangepast worden.

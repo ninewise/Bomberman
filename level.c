@@ -64,7 +64,7 @@ void init_level(Level * level, LevelInfo level_info) {
 }
 
 void render_level(Level * level) {
-    int i, j, a;
+    int i, j;
     // Placing entities.
     for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++) {
         Entity entity = level->entities[i][j];
@@ -79,7 +79,17 @@ void render_level(Level * level) {
     for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++)
         if(level->entities[i][j].type == EXPLOSION) {
             Explosion exp = level->entities[i][j].explosion;
+            int a = exp.power;
+            int* spread = exp.spread;
             gui_add_explosion_tile(exp.x, exp.y, 42);
+            // De explosies in elke richting uitbereiden.
+            while(a > 0) {
+                if(spread[0]) gui_add_explosion_tile(exp.x, exp.y - a * TILE_SIZE, 42);
+                if(spread[1]) gui_add_explosion_tile(exp.x, exp.y + a * TILE_SIZE, 42);
+                if(spread[2]) gui_add_explosion_tile(exp.x + a * TILE_SIZE, exp.y, 42);
+                if(spread[3]) gui_add_explosion_tile(exp.x - a * TILE_SIZE, exp.y, 42);
+                a--;
+            }
     }
 }
 
