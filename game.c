@@ -134,7 +134,10 @@ void process_bombs(Game * game) {
                 while( a <= power ){
                     if(!done[0]){
                         if(game->level.entities[i][j - a].type == OBSTACLE){
-                            if(game->level.entities[i][j - a].obstacle.is_destructable) {spread[0] = a;}
+                            if(game->level.entities[i][j - a].obstacle.is_destructable) {
+                                spread[0] = a;
+                                put_empty_space(game->level.entities, i, j - a); 
+                            }
                             else {spread[0] = a -1;}                       
                             done[0] = 1;
                         } else {
@@ -143,7 +146,10 @@ void process_bombs(Game * game) {
                     } 
                     if(!done[1]){
                         if(game->level.entities[i][j + a].type == OBSTACLE){
-                            if(game->level.entities[i][j + a].obstacle.is_destructable) {spread[1] = a;}
+                            if(game->level.entities[i][j + a].obstacle.is_destructable) {
+                                spread[1] = a;
+                                put_empty_space(game->level.entities, i, j + a);
+                             }
                             else {spread[1] = a - 1;}                    
                             done[1] = 1;
                         } else {
@@ -152,7 +158,10 @@ void process_bombs(Game * game) {
                     }
                     if(!done[2]){
                         if(game->level.entities[i + a][j].type == OBSTACLE){
-                            if(game->level.entities[i + a][j].obstacle.is_destructable) {spread[2] = a;}
+                            if(game->level.entities[i + a][j].obstacle.is_destructable) {
+                                spread[2] = a;
+                                put_empty_space(game->level.entities, i + a, j);
+                             }
                             else {spread[2] = a - 1;}                        
                             done[2] = 1;
                         } else {
@@ -161,7 +170,10 @@ void process_bombs(Game * game) {
                     } 
                     if(!done[3]){
                         if(game->level.entities[i - a][j].type == OBSTACLE){
-                            if(game->level.entities[i - a][j].obstacle.is_destructable) {spread[3] = a;}
+                            if(game->level.entities[i - a][j].obstacle.is_destructable) {
+                                spread[3] = a;
+                                put_empty_space(game->level.entities, i - a, j);
+                             }
                             else {spread[3] = a - 1;}                         
                             done[3] = 1;
                         } else {
