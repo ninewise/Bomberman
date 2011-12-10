@@ -1,5 +1,7 @@
 
 #include "functions.h"
+#include "game.h"
+#include "enemy.h"
 #include "blast_it.h"
 
 int rectangle_overlap(int rect1[4], int rect2[4]) {

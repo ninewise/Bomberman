@@ -82,7 +82,6 @@ void render_level(Level * level) {
             Explosion exp = level->entities[i][j].explosion;
             if(level->entities[i][j - 1].type != OBSTACLE
                 || level->entities[i][j - 1].obstacle.is_destructable) exp.spread[0] = 1;
-            printf("%d %d %d %d \n", exp.spread[0], exp.spread[1],exp.spread[2],exp.spread[3]);
             int a = 0;
             int spread[4] = {exp.spread[0],exp.spread[1],exp.spread[2],exp.spread[3]};
             gui_add_explosion_tile(exp.x, exp.y, 42);
