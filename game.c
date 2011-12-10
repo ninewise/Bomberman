@@ -120,10 +120,10 @@ void process_bombs(Game * game) {
             int occupied = 0;   // Of er al dan niet een vijand of speler op deze bom staat.
             int tile1[2] = {game->player.x, game->player.y};
             int tile2[2] = {bomb.x, bomb.y};
-            occupied = (occupied) ? occupied : tile_overlap(tile1, tile2);
+            occupied = occupied || tile_overlap(tile1, tile2);
             for(e = 0; e < game->level.level_info.nr_of_enemies; e++) {
                 int etile[2] = {game->enemies[e].x, game->enemies[e].y};
-                occupied = (occupied) ? occupied : tile_overlap(tile1, etile);
+                occupied = occupied || tile_overlap(tile1, etile);
             }
             if(!occupied && bomb.ticks_left < 0) bomb.ticks_left *= -1;
 
