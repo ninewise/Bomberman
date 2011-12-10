@@ -62,10 +62,19 @@ void update_enemy(Enemy* enemy, Game* game){
     else if(enemy->move_direction == EAST) tilex += increment;		
     else if(enemy->move_direction == WEST) tilex -= increment;	
 
-    if(is_abs_walkable(game->level.entities, tilex, tiley)) {
-        enemy->y = tiley;
-        enemy->x = tilex;
-    } else printf("can't go to (%d,%d) (%d,%d) from (%d,%d) (%d,%d)\n", tilex, tiley, TILE(tilex), TILE(tiley), enemy->x, enemy->y, TILE(enemy->x), TILE(enemy->y));
+    if(!is_abs_walkable(game->level.entities, tilex, tiley)) {
+        enemy->move_direction = ( enemy->move_direction + 2 ) % 4;
+        while(!is_abs_walkable(game->level.entities, tilex, tiley)){
+            if(enemy->move_direction == NORTH) tiley -= increment;	
+            if(enemy->move_direction == SOUTH) tiley += increment;		
+            if(enemy->move_direction == EAST) tilex += increment;		
+            if(enemy->move_direction == WEST) tilex -= increment;
+            printf("enemy x: %d & enemy y: %d\n", enemy->x, enemy->y);
+        }     
+    }
+    enemy->x = tilex;
+    enemy->y = tiley;    
+    
 }
 
 void render_enemy(Enemy* enemy){
