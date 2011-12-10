@@ -120,6 +120,9 @@ void process_bombs(Game * game) {
             int occupied = collides_with(game, bomb.x, bomb.y);
             if(!occupied && bomb.ticks_left < 0) bomb.ticks_left *= -1;
 
+            // De ticks van de bom in entities moet ook aangepast worden.
+            game->level.entities[i][j].bomb.ticks_left = bomb.ticks_left; 
+
             // En we ontploffen als we 0 zijn.
             if(bomb.ticks_left == 0) {
                 int power = game->player.current_bomb_power;
@@ -171,8 +174,6 @@ void process_bombs(Game * game) {
                 put_explosion(game->level.entities, i, j, spread, game->player.current_bomb_power, EXPLOSION_TICKS);
             }
 
-            // De ticks van de bom in entities moet ook aangepast worden.
-            game->level.entities[i][j].bomb.ticks_left = bomb.ticks_left; 
         } 
 
         if(game->level.entities[i][j].type == EXPLOSION) {
