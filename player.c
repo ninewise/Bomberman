@@ -43,26 +43,26 @@ void move_player(Player* player, int moves[4], Entity** entities) {
     // We lossen horizontale collisions met entiteiten op. Dit door te kijken
     // naar de vier hoeken als we horizontaal bewegen (en dit dan horizontaal
     // te corrigeren).
-    if((nx <= ox && !is_abs_walkable(entities, nx - dx, oy - dy))
-    || (nx >= ox && !is_abs_walkable(entities, nx + dx, oy - dy))
-    || (nx <= ox && !is_abs_walkable(entities, nx - dx, oy + dy))
-    || (nx >= ox && !is_abs_walkable(entities, nx + dx, oy + dy)))
+    if((nx <= ox && !is_walkable(entities[TO_TILE(nx - dx)][TO_TILE(oy - dy)]))
+    || (nx >= ox && !is_walkable(entities[TO_TILE(nx + dx)][TO_TILE(oy - dy)]))
+    || (nx <= ox && !is_walkable(entities[TO_TILE(nx - dx)][TO_TILE(oy + dy)]))
+    || (nx >= ox && !is_walkable(entities[TO_TILE(nx + dx)][TO_TILE(oy + dy)])))
         nx = ox;
 
     // Eveneens de verticale.
-    if((ny <= oy && !is_abs_walkable(entities, ox - dx, ny - dy))
-    || (ny >= oy && !is_abs_walkable(entities, ox - dx, ny + dy))
-    || (ny <= oy && !is_abs_walkable(entities, ox + dx, ny - dy))
-    || (ny >= oy && !is_abs_walkable(entities, ox + dx, ny + dy)))
+    if((ny <= oy && !is_walkable(entities[TO_TILE(ox - dx)][TO_TILE(ny - dy)]))
+    || (ny >= oy && !is_walkable(entities[TO_TILE(ox - dx)][TO_TILE(ny + dy)]))
+    || (ny <= oy && !is_walkable(entities[TO_TILE(ox + dx)][TO_TILE(ny - dy)]))
+    || (ny >= oy && !is_walkable(entities[TO_TILE(ox + dx)][TO_TILE(ny + dy)])))
         ny = oy;
 
-    // Nu kunnen we nog diagonale clashes, die niet horizontaal of verticaal
+    // Nu kunnen we nog diagonale clashes[die niet horizontaal of verticaal
     // clashen, hebben. Die kunnen we oplossen door de speler gewoon enkel
     // horizontaal te bewegen.
-    if(!is_abs_walkable(entities, nx + dx, ny + dy)
-    || !is_abs_walkable(entities, nx + dx, ny - dy)
-    || !is_abs_walkable(entities, nx - dx, ny + dy)
-    || !is_abs_walkable(entities, nx - dx, ny - dy)) {
+    if(!is_walkable(entities[TO_TILE(nx + dx)][TO_TILE(ny + dy)])
+    || !is_walkable(entities[TO_TILE(nx + dx)][TO_TILE(ny - dy)])
+    || !is_walkable(entities[TO_TILE(nx - dx)][TO_TILE(ny + dy)])
+    || !is_walkable(entities[TO_TILE(nx - dx)][TO_TILE(ny - dy)])) {
         ny = oy;
         nx = ox;
     }
