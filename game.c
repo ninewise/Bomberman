@@ -122,18 +122,52 @@ void process_bombs(Game * game) {
 
             // En we ontploffen als we 0 zijn.
             if(bomb.ticks_left == 0) {
-                int spread[4] = {1,1,1,1};
-
+                int power = game->player.current_bomb_power;
+                int spread[4];
+                int done[4] = {0,0,0,0};
+                int a = 1;
                 // Kijk op welke plekken de explosies zich spreidt
-                if(game->level.entities[i][j - 1].type == OBSTACLE
-                &&!game->level.entities[i][j - 1].obstacle.is_destructable) spread[0] = 0;
-                if(game->level.entities[i][j + 1].type == OBSTACLE
-                &&!game->level.entities[i][j + 1].obstacle.is_destructable) spread[1] = 0;
-                if(game->level.entities[i + 1][j].type == OBSTACLE
-                &&!game->level.entities[i + 1][j].obstacle.is_destructable) spread[2] = 0;
-                if(game->level.entities[i - 1][j].type == OBSTACLE
-                &&!game->level.entities[i - 1][j].obstacle.is_destructable) spread[3] = 0;
-
+                                                
+                while( a <= power ){
+                    if(!done[0]){
+                        if(game->level.entities[i][j - a].type == OBSTACLE){
+                            if(game->level.entities[i][j - a].obstacle.is_destructable) {spread[0] = a;}
+                            else {spread[0] = a -1;}                       
+                            done[0] = 1;
+                        } else {
+                            spread[0] = a;
+                        }
+                    } 
+                    if(!done[1]){
+                        if(game->level.entities[i][j + a].type == OBSTACLE){
+                            if(game->level.entities[i][j + a].obstacle.is_destructable) {spread[1] = a;}
+                            else {spread[1] = a - 1;}                    
+                            done[1] = 1;
+                        } else {
+                            spread[1] = a;
+                        }
+                    }
+                    if(!done[2]){
+                        if(game->level.entities[i + a][j].type == OBSTACLE){
+                            if(game->level.entities[i + a][j].obstacle.is_destructable) {spread[2] = a;}
+                            else {spread[2] = a - 1;}                        
+                            done[2] = 1;
+                        } else {
+                            spread[2] = a;
+                        }
+                    } 
+                    if(!done[3]){
+                        if(game->level.entities[i - a][j].type == OBSTACLE){
+                            if(game->level.entities[i - a][j].obstacle.is_destructable) {spread[3] = a;}
+                            else {spread[3] = a - 1;}                         
+                            done[3] = 1;
+                        } else {
+                            spread[3] = a;
+                        }
+                    }                            
+                    a++;
+                }
+                
                 put_explosion(game->level.entities, i, j, spread, game->player.current_bomb_power, EXPLOSION_TICKS);
             }
 
