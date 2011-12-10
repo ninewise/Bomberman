@@ -134,7 +134,20 @@ void process_bombs(Game * game) {
             }
 
             // De ticks van de bom in entities moet ook aangepast worden.
-            game->level.entities[i][j].bomb.ticks_left = bomb.ticks_left;
+            game->level.entities[i][j].bomb.ticks_left = bomb.ticks_left; 
+        } 
+
+        if(game->level.entities[i][j].type == EXPLOSION) {
+            Explosion exp = game->level.entities[i][j].explosion;
+            exp.ticks_left--;
+            
+            game->level.entities[i][j].explosion.ticks_left = exp.ticks_left;
+            
+            if(exp.ticks_left == 0) {
+                put_empty_space(game->level.entities, i, j);    
+            }
+            
+
         }
     }
 }
