@@ -80,10 +80,11 @@ void render_level(Level * level) {
     for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++){
         if(level->entities[i][j].type == EXPLOSION) {
             Explosion exp = level->entities[i][j].explosion;
-
+            
             int* spread = exp.spread;
             gui_add_explosion_tile(exp.x, exp.y, 42);
             // De explosies in elke richting uitbereiden.
+                        printf("spread0 : %d spread1 : %d spread2 : %d spread3 : %d\n", spread[0],spread[1],spread[2],spread[3]);
             while(spread[0]) {
                 gui_add_explosion_tile(exp.x, exp.y - spread[0] * TILE_SIZE, 42);   
                 spread[0]--; 
@@ -100,7 +101,6 @@ void render_level(Level * level) {
                 gui_add_explosion_tile(exp.x - spread[3] * TILE_SIZE , exp.y, 42);   
                 spread[3]--; 
             }
-
         }    
     }
 }
