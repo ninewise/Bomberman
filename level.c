@@ -80,12 +80,14 @@ void render_level(Level * level) {
     for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++)
         if(level->entities[i][j].type == EXPLOSION) {
             Explosion exp = level->entities[i][j].explosion;
-            exp.spread[0] = 1;
-            int a = exp.power;
-            int* spread = exp.spread;
+            if(level->entities[i][j - 1].type != OBSTACLE
+                || level->entities[i][j - 1].obstacle.is_destructable) exp.spread[0] = 1;
+            printf("%d %d %d %d \n", exp.spread[0], exp.spread[1],exp.spread[2],exp.spread[3]);
+            int a = 0;
+            int spread[4] = {exp.spread[0],exp.spread[1],exp.spread[2],exp.spread[3]};
             gui_add_explosion_tile(exp.x, exp.y, 42);
             // De explosies in elke richting uitbereiden.
-            while(a > 0) {
+            while(a <= exp.power) {
 
                 // Als de explosie zich nog in de richting verspreid, tekenen we ze ook.
                 if(spread[0]) gui_add_explosion_tile(exp.x, exp.y - a * TILE_SIZE, 42);
@@ -94,13 +96,13 @@ void render_level(Level * level) {
                 if(spread[3]) gui_add_explosion_tile(exp.x - a * TILE_SIZE, exp.y, 42);
 
                 // Als we een obstacle tegen komen, stoppen we de explosie.
-                if(level->entities[i][j - a].type == OBSTACLE) spread[0] = 0;
-                if(level->entities[i][j + a].type == OBSTACLE) spread[1] = 0;
-                if(level->entities[i + a][j].type == OBSTACLE) spread[2] = 0;
-                if(level->entities[i - a][j].type == OBSTACLE) spread[3] = 0;
+                if(spread[0] && level->entities[i][j - a].type == OBSTACLE) spread[0] = 0;
+                if(spread[1] && level->entities[i][j + a].type == OBSTACLE) spread[1] = 0;
+                if(spread[2] && level->entities[i + a][j].type == OBSTACLE) spread[2] = 0;
+                if(spread[3] && level->entities[i - a][j].type == OBSTACLE) spread[3] = 0;
 
                 // 
-                a--;
+                a++;
             }
     }
 }
