@@ -102,7 +102,7 @@ void process_bonus_items(Game * game) {
 }
 
 void process_bombs(Game * game) {
-    int i, j, e;
+    int i, j;
     // Als de speler een bom gelegd heeft, en de speler heeft nog bommen ter
     // beschikking, plaatsen we een nieuwe bom.
     if(game->input.dropBomb && game->player.remaining_bombs > 0) {
@@ -117,14 +117,7 @@ void process_bombs(Game * game) {
 
             // We zorgen dat bommen niet langer beloopbaar zijn zodra er geen
             // player of enemy meer op staat.
-            int occupied = 0;   // Of er al dan niet een vijand of speler op deze bom staat.
-            int tile1[2] = {game->player.x, game->player.y};
-            int tile2[2] = {bomb.x, bomb.y};
-            occupied = tile_overlap(tile1, tile2);
-            for(e = 0; e < game->level.level_info.nr_of_enemies; e++) {
-                int etile[2] = {game->enemies[e].x, game->enemies[e].y};
-                occupied += tile_overlap(tile1, etile);
-            }
+            int occupied = collides_with(game, bomb.x, bomb.y);
             if(!occupied && bomb.ticks_left < 0) bomb.ticks_left *= -1;
 
             // En we ontploffen als we 0 zijn.

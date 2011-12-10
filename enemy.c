@@ -62,17 +62,10 @@ void update_enemy(Enemy* enemy, Game* game){
     else if(enemy->move_direction == EAST) tilex += increment;		
     else if(enemy->move_direction == WEST) tilex -= increment;	
 
-    if(!is_abs_walkable(game->level.entities, tilex, tiley)) {
-        enemy->move_direction = ( enemy->move_direction + 2 ) % 4;
-        while(!is_abs_walkable(game->level.entities, tilex, tiley)){
-            if(enemy->move_direction == NORTH) tiley -= increment;	
-            if(enemy->move_direction == SOUTH) tiley += increment;		
-            if(enemy->move_direction == EAST) tilex += increment;		
-            if(enemy->move_direction == WEST) tilex -= increment;
-        }     
+    if(is_abs_walkable(game->level.entities, tilex, tiley)) {
+        enemy->x = tilex;
+        enemy->y = tiley;    
     }
-    enemy->x = tilex;
-    enemy->y = tiley;    
     
 }
 
