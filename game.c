@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "functions.h"
+#include "entity.h"
 
 #define DECENTER(X)     ((X) - TILE_SIZE/2)
 #define CENTER(X)       ((X) + TILE_SIZE/2)
@@ -128,15 +129,8 @@ void process_bombs(Game * game) {
 
             // En we ontploffen als we 0 zijn.
             if(bomb.ticks_left == 0) {
-                Explosion explosion = {
-                    EXPLOSION,
-                    bomb.x,
-                    bomb.y,
-                    {1,1,1,1},
-                    3,
-                    EXPLOSION_TICKS
-                };
-                game->level.entities[i][j].explosion = explosion;
+                int spread[4] = {1,1,1,1};
+                put_explosion(game->level.entities, i, j, spread, 3, EXPLOSION_TICKS);
             }
 
             // De ticks van de bom in entities moet ook aangepast worden.
