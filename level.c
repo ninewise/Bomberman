@@ -86,16 +86,6 @@ void render_level(Level * level) {
             gui_add_explosion_tile(exp.x, exp.y, 42);
             // De explosies in elke richting uitbereiden.
             while(a > 0) {
-                // Als de explosie boven een non-destructable plaats zou vinden,
-                // verhinderen we dit.
-                if(level->entities[i][j - a].type == OBSTACLE
-                &&!level->entities[i][j - a].obstacle.is_destructable) spread[0] = 0;
-                if(level->entities[i][j + a].type == OBSTACLE
-                &&!level->entities[i][j + a].obstacle.is_destructable) spread[1] = 0;
-                if(level->entities[i + a][j].type == OBSTACLE
-                &&!level->entities[i + a][j].obstacle.is_destructable) spread[2] = 0;
-                if(level->entities[i - a][j].type == OBSTACLE
-                &&!level->entities[i - a][j].obstacle.is_destructable) spread[3] = 0;
 
                 // Als de explosie zich nog in de richting verspreid, tekenen we ze ook.
                 if(spread[0]) gui_add_explosion_tile(exp.x, exp.y - a * TILE_SIZE, 42);

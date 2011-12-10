@@ -130,6 +130,17 @@ void process_bombs(Game * game) {
             // En we ontploffen als we 0 zijn.
             if(bomb.ticks_left == 0) {
                 int spread[4] = {1,1,1,1};
+
+                // Kijk op welke plekken de explosies zich spreidt
+                if(game->level.entities[i][j - 1].type == OBSTACLE
+                &&!game->level.entities[i][j - 1].obstacle.is_destructable) spread[0] = 0;
+                if(game->level.entities[i][j + 1].type == OBSTACLE
+                &&!game->level.entities[i][j + 1].obstacle.is_destructable) spread[1] = 0;
+                if(game->level.entities[i + 1][j].type == OBSTACLE
+                &&!game->level.entities[i + 1][j].obstacle.is_destructable) spread[2] = 0;
+                if(game->level.entities[i - 1][j].type == OBSTACLE
+                &&!game->level.entities[i - 1][j].obstacle.is_destructable) spread[3] = 0;
+
                 put_explosion(game->level.entities, i, j, spread, game->player.current_bomb_power, EXPLOSION_TICKS);
             }
 
