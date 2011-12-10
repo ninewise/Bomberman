@@ -69,7 +69,6 @@ void update_enemy(Enemy* enemy, Game* game){
             if(enemy->move_direction == SOUTH) tiley += increment;		
             if(enemy->move_direction == EAST) tilex += increment;		
             if(enemy->move_direction == WEST) tilex -= increment;
-            printf("enemy x: %d & enemy y: %d\n", enemy->x, enemy->y);
         }     
     }
     enemy->x = tilex;

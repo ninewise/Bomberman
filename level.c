@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "entity.h"
 #include <math.h>
+#include <stdio.h> 
 
 LevelInfo generate_level_info(int level_nr)
 {
@@ -79,6 +80,7 @@ void render_level(Level * level) {
     for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++)
         if(level->entities[i][j].type == EXPLOSION) {
             Explosion exp = level->entities[i][j].explosion;
+            exp.spread[0] = 1;
             int a = exp.power;
             int* spread = exp.spread;
             gui_add_explosion_tile(exp.x, exp.y, 42);
