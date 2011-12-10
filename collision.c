@@ -1,5 +1,5 @@
 
-#include "functions.h"
+#include "collision.h"
 #include "game.h"
 #include "enemy.h"
 #include "blast_it.h"

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "functions.h"
+#include "collision.h"
 #include "entity.h"
 
 #define DECENTER(X)     ((X) - TILE_SIZE/2)
