@@ -20,6 +20,7 @@ void put_explosion(Entity** entities, int x, int y, int spread[4], int power, in
     entities[x][y].explosion.spread[1] = spread[1];
     entities[x][y].explosion.spread[2] = spread[2];
     entities[x][y].explosion.spread[3] = spread[3];
+    printf("{%d,%d,%d,%d}", spread[0], spread[1], spread[2], spread[3]);
     entities[x][y].explosion.power = power;
     entities[x][y].explosion.ticks_left = ticks_left;
 }
