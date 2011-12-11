@@ -84,7 +84,6 @@ void render_level(Level * level) {
             int* spread = exp.spread;
             gui_add_explosion_tile(exp.x, exp.y, 42);
             // De explosies in elke richting uitbereiden.
-                        printf("spread0 : %d spread1 : %d spread2 : %d spread3 : %d\n", spread[0],spread[1],spread[2],spread[3]);
             while(spread[0]) {
                 gui_add_explosion_tile(exp.x, exp.y - spread[0] * TILE_SIZE, 42);   
                 spread[0]--; 

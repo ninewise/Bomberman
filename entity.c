@@ -22,7 +22,6 @@ void put_explosion(Entity** entities, int x, int y, int spread[4], int power, in
     entities[x][y].explosion.spread[3] = spread[3];
     entities[x][y].explosion.power = power;
     entities[x][y].explosion.ticks_left = ticks_left;
-    printf("SPREAD0 NA TOEVOEGEN %d\n", entities[x][y].explosion.spread[0]);
 }
 
 void put_powerup(Entity** entities, int x, int y, POWERUP_TYPE type) {
