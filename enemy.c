@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "entity.h"
 #include <stdio.h>
+#include "collision.h"
 
 #define ABSTILE(X)  ((X) / TILE_SIZE * TILE_SIZE)
 #define TILE(X)     ((X) / TILE_SIZE)
@@ -71,6 +72,8 @@ void update_enemy(Enemy* enemy, Game* game){
            enemy->y = tiley;    
         }
     }
+    
+    if(collides_with(game, enemy->x, enemy->y) == - 1) game->game_over = 1;
 }
 
 void render_enemy(Enemy* enemy){
