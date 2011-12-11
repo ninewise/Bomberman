@@ -59,5 +59,6 @@ int is_walkable(Entity entity) {
     if(entity.type == EMPTY_SPACE) return 1;
     if(entity.type == BOMB && entity.bomb.ticks_left < 0) return 2;
     if(entity.type == EXPLOSION) return 3;
+    if(entity.type == POWERUP) return 4;
     return 0;
 }

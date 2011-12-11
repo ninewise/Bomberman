@@ -9,17 +9,17 @@
 LevelInfo generate_level_info(int level_nr)
 {
 	LevelInfo level_info;
-	level_info.width = rand() % 10 + level_nr + 15;
-	level_info.height = level_info.width * 3/4;
+	level_info.width = level_nr + 15;
+	level_info.height = level_info.width * 2/3;
 	level_info.level_nr = level_nr;
 	level_info.realm = ((level_nr - 1) % 5) + 1;
-	level_info.fill_ratio = 0.05 + 1/2 * log(level_nr);
-	level_info.nr_of_enemies = 3 + level_nr * 5/4 * log(level_nr);
+	level_info.fill_ratio = 0.05 + 1/8 * log(level_nr) + 0.00 * level_nr;
+	level_info.nr_of_enemies = 3 + log(level_nr) * log(level_nr);
 	level_info.spawn_boss = level_nr / 5;
-    if( (rand() % 5) + 1 < ((level_nr - 1) % 5) + 1 ){
+    if( rand() % 5 + 1 < (level_nr - 1) % 5 ){
         level_info.spawn_boss += (rand() % level_nr) * 1/5 * log(level_nr);
     }
-	level_info.bonus_spawn_ratio = 1;
+	level_info.bonus_spawn_ratio = 0.2;
 	return level_info;
 }
 

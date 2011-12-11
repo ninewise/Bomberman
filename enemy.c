@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "entity.h"
 #include <stdio.h>
+#include "collision.h"
 
 #define ABSTILE(X)      ((X) / TILE_SIZE * TILE_SIZE)
 #define TILE(X)         ((X) / TILE_SIZE)
@@ -33,53 +34,69 @@ void init_enemy(Enemy* enemy, Level* level){
 
 void update_enemy(Enemy* enemy, Game* game){      
     int dx, dy, increment, count = 0, next;
+    if(enemy->frozen){
+       enemy->frozen--;
+    } else {
     
-    if(enemy->is_boss) increment = BOSS_MOVEMENT_INCREMENT;
-    else increment = ENEMY_MOVEMENT_INCREMENT;
+        if(enemy->is_boss) increment = BOSS_MOVEMENT_INCREMENT;
+        else increment = ENEMY_MOVEMENT_INCREMENT;
 
-    // Als de vijand mooi op een tegel staat, geven we hem een nieuwe richting.
-    if(ABSTILE(enemy->x) == enemy->x && ABSTILE(enemy->y) == enemy->y) {
-        // Een array die bijhoudt in welke richtingen de vijand kan bewegen.
-        int walkable[4] = {
-            is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y) - 1]),
-            is_walkable(game->level.entities[TILE(enemy->x) + 1][TILE(enemy->y)]),
-            is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y) + 1]),
-            is_walkable(game->level.entities[TILE(enemy->x) - 1][TILE(enemy->y)])
-        };
-        do {
-            // Met een kans van 4/10 kiezen we een nieuwe richting voor de vijand.
-            if(rand() % 10 < 4) enemy->move_direction = rand() % 4;
-            count++;
-        } while(!walkable[enemy->move_direction] && count < 10);
-    }
+        // Als de vijand mooi op een tegel staat, geven we hem een nieuwe richting.
+        if(ABSTILE(enemy->x) == enemy->x && ABSTILE(enemy->y) == enemy->y) {
+         // Een array die bijhoudt in welke richtingen de vijand kan bewegen.
+            int walkable[4] = {
+              is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y) - 1]),
+              is_walkable(game->level.entities[TILE(enemy->x) + 1][TILE(enemy->y)]),
+              is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y) + 1]),
+              is_walkable(game->level.entities[TILE(enemy->x) - 1][TILE(enemy->y)])
+          };
+          do {
+                // Met een kans van 4/10 kiezen we een nieuwe richting voor de vijand.
+                if(rand() % 10 < 4) enemy->move_direction = rand() % 4;
+                count++;
+            } while(!walkable[enemy->move_direction] && count < 10);
+        }   
 
-    dx = 0;
-    dy = 0;
+        dx = 0;
+        dy = 0;
 
-    if(count == 10); // De vijand zit hoogstwaarschijnlijk vast, we doen niets.
-    else if(enemy->move_direction == NORTH) dy--;
-    else if(enemy->move_direction == SOUTH) dy++;
-    else if(enemy->move_direction == EAST) dx++;
-    else if(enemy->move_direction == WEST) dx--;
+        if(count == 10); // De vijand zit hoogstwaarschijnlijk vast, we doen niets.
+        else if(enemy->move_direction == NORTH) dy--;
+        else if(enemy->move_direction == SOUTH) dy++;
+        else if(enemy->move_direction == EAST) dx++;
+        else if(enemy->move_direction == WEST) dx--;
 
-    // We kijken of de tegel waar de vijand naar gaat een bom is.
-    if(dx > 0 || dy > 0)
-        next = is_walkable(game->level.entities[TILE(enemy->x) + dx][TILE(enemy->y) + dy]);
-    else
-        next = is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y)]);
-    if(next == 2) { // Als de vijand op een bom zit, laten we hem
-                    // achteruit lopen.
-        enemy->x += -dx;
-        enemy->y += -dy;
-    } else if(is_abs_walkable(game->level.entities, enemy->x + dx * increment, enemy->y + dy * increment)) {
-        enemy->x += dx;
-        enemy->y += dy;
+        // We kijken of de tegel waar de vijand naar gaat een bom is.
+        if(dx > 0 || dy > 0)
+            next = is_walkable(game->level.entities[TILE(enemy->x) + dx][TILE(enemy->y) + dy]);
+        else
+            next = is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y)]);
+        if(next == 2) { // Als de vijand op een bom zit, laten we hem
+                        // achteruit lopen.
+            enemy->x += -dx;
+            enemy->y += -dy;
+        } else if(is_abs_walkable(game->level.entities, enemy->x + dx * increment, enemy->y + dy * increment)) {
+            enemy->x += dx;
+            enemy->y += dy;
+        }
     }
     
+    if(collides_with(game, enemy->x, enemy->y) == - 1) game->game_over = 1;
 }
 
 void render_enemy(Enemy* enemy){
 	gui_add_enemy(enemy);
 }
 
-void destroy_enemy(Enemy* enemy){}
+void destroy_enemy(Game* game, Enemy* enemy){
+    enemy->remaining_lives--;
+    if(!enemy->remaining_lives){
+    // Enemy naar kerkhof (-5,-5) verplaatsen, score bijtellen
+        enemy->x = -5;
+        enemy->y = -5;
+        enemy->is_dead = 1;
+        game->enemies_left--;
+        if(enemy->is_boss) game->score += SCORE_BOSS;
+        else if(BASE_SCORE_ENEMY - gui_get_timer_score() > 0) game->score += (BASE_SCORE_ENEMY - gui_get_timer_score());
+    }
+}
