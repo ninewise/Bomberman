@@ -20,7 +20,7 @@ void save_highscores();
 typedef struct Highscore
 {
 	int score;
-	char name [60];	
+	char name [50];	
 } Highscore;
 
 typedef struct Highscorelist

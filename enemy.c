@@ -25,7 +25,7 @@ void init_enemy(Enemy* enemy, Level* level){
 	if(level->level_info.spawn_boss){
 		enemy->is_boss = 1;
 		level->level_info.spawn_boss--;
-		enemy->remaining_lives = 3;
+		enemy->remaining_lives = 4;
 	} else {
 		enemy->is_boss = 0;
 		enemy->remaining_lives = 1;

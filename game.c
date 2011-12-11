@@ -243,7 +243,8 @@ void process_bombs(Game * game) {
                 // om niet verder te gaan kijken
                                                 
                 while( a <= power ){
-                    int collision;
+                    int collision = loose_collides_with(game, i * TILE_SIZE, j * TILE_SIZE, 3);
+                    if(collision == -1) game->game_over = 1;
                     if(!done[0]){
                         if(NORTH(i,j,a).type == OBSTACLE){ // Is het een obstakel, dan stopt de explosie
                             if(NORTH(i,j,a).obstacle.is_destructable) {
