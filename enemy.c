@@ -85,7 +85,7 @@ void update_enemy(Enemy* enemy, Game* game){
         }
     }
     
-    if(collides_with(game, enemy->x, enemy->y) == - 1) game->game_over = 1;
+    if(loose_collides_with(game, enemy->x, enemy->y, 3) == - 1) game->game_over = 1;
 }
 
 void render_enemy(Enemy* enemy){

@@ -28,4 +28,10 @@ int tile_overlap(int tile1[2], int tile2[2]);
  */
 int collides_with(Game* game, int x, int y);
 
+/**
+ * Zelfde, maar dan met een gegeven precisie. Als precisie bijvoorbeeld 1 is, kunnen
+ * de tegels 1 overlappen zonder collisie.
+ */
+int loose_collides_with(Game* game, int x, int y, int precision);
+
 #endif
