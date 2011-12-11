@@ -17,12 +17,12 @@ void init_enemy(Enemy* enemy, Level* level);
 void update_enemy(Enemy* enemy, Game* game);
 
 /**
- * Tekent de enemy op het scherm.
+ * Tekent de enemy op het scherm
  */
 void render_enemy(Enemy* enemy);
 
 /**
- * Verwijdert de enemy.
+ * Beschadigt de vijand en vernietigt deze eventueel
  */
 void destroy_enemy(Game* game, Enemy* enemy);
 

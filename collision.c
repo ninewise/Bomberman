@@ -44,10 +44,13 @@ int tile_overlap(int tile1[2], int tile2[2]) {
 int collides_with(Game* game, int x, int y) {
     int e;
     int collision = 0;
+    // Check voor collisie met player
     int tile[2] = {x, y};
     int player[2] = {game->player.x, game->player.y};
     collision = tile_overlap(tile, player);
     if(collision) return -1;
+    // Check voor collisie met vijand, als er 1 is geven we zijn index+1 terug
+    // De +1 dient omdat we 0 gebruiken voor return zonder collisies
     for(e = 0; e < game->level.level_info.nr_of_enemies; e++) {
         if(!game->enemies[e].is_dead) {
             int enemy[2] = {game->enemies[e].x, game->enemies[e].y};

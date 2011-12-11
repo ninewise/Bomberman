@@ -15,7 +15,7 @@ void init_player(Player* player) {
     player->y = 1 * TILE_SIZE;
     player->orientation = NORTH;
     player->current_bomb_power = 1;
-    player->remaining_bombs = 10;
+    player->remaining_bombs = 20;
 }
 
 void render_player(Player* player) {
@@ -92,7 +92,7 @@ void player_drop_bomb(Player * player, Entity** entities) {
     bomb_entity.bomb = bomb;
 
     entities[TO_TILE(CENTER(player->x))][TO_TILE(CENTER(player->y))] = bomb_entity;
-    //player->remaining_bombs--;
+    player->remaining_bombs--;
 }
 
 void destroy_player(Player* player) {}

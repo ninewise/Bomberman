@@ -83,8 +83,9 @@ void render_enemy(Enemy* enemy){
 void destroy_enemy(Game* game, Enemy* enemy){
     enemy->remaining_lives--;
     if(!enemy->remaining_lives){
-        enemy->x = 1;
-        enemy->y = 1;
+    // Enemy naar kerkhof (-5,-5) verplaatsen, score bijtellen
+        enemy->x = -5;
+        enemy->y = -5;
         enemy->is_dead = 1;
         game->enemies_left--;
         if(enemy->is_boss) game->score += SCORE_BOSS;

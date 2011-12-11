@@ -112,7 +112,7 @@ void process_bonus_items(Game * game) {
             case EXTRA_BOMB: game->player.remaining_bombs++; break;
             case FREEZE_ENEMIES: 
                 for( i = 0; i < game->level.level_info.nr_of_enemies; i++ ){
-                    game->enemies[i].frozen = 125;
+                    game->enemies[i].frozen = FREEZE_DURATION;
                 }              
                 break;
         }
