@@ -120,6 +120,9 @@ void process_bombs(Game * game) {
             int occupied = collides_with(game, bomb.x, bomb.y);
             if(!occupied && bomb.ticks_left < 0) bomb.ticks_left *= -1;
 
+            // De ticks van de bom in entities moet ook aangepast worden.
+            game->level.entities[i][j].bomb.ticks_left = bomb.ticks_left; 
+
             // En we ontploffen als we 0 zijn.
             if(bomb.ticks_left == 0) {
                 int power = game->player.current_bomb_power;
@@ -131,7 +134,10 @@ void process_bombs(Game * game) {
                 while( a <= power ){
                     if(!done[0]){
                         if(game->level.entities[i][j - a].type == OBSTACLE){
-                            if(game->level.entities[i][j - a].obstacle.is_destructable) {spread[0] = a;}
+                            if(game->level.entities[i][j - a].obstacle.is_destructable) {
+                                spread[0] = a;
+                                put_empty_space(game->level.entities, i, j - a); 
+                            }
                             else {spread[0] = a -1;}                       
                             done[0] = 1;
                         } else {
@@ -140,7 +146,10 @@ void process_bombs(Game * game) {
                     } 
                     if(!done[1]){
                         if(game->level.entities[i][j + a].type == OBSTACLE){
-                            if(game->level.entities[i][j + a].obstacle.is_destructable) {spread[1] = a;}
+                            if(game->level.entities[i][j + a].obstacle.is_destructable) {
+                                spread[1] = a;
+                                put_empty_space(game->level.entities, i, j + a);
+                             }
                             else {spread[1] = a - 1;}                    
                             done[1] = 1;
                         } else {
@@ -149,7 +158,10 @@ void process_bombs(Game * game) {
                     }
                     if(!done[2]){
                         if(game->level.entities[i + a][j].type == OBSTACLE){
-                            if(game->level.entities[i + a][j].obstacle.is_destructable) {spread[2] = a;}
+                            if(game->level.entities[i + a][j].obstacle.is_destructable) {
+                                spread[2] = a;
+                                put_empty_space(game->level.entities, i + a, j);
+                             }
                             else {spread[2] = a - 1;}                        
                             done[2] = 1;
                         } else {
@@ -158,7 +170,10 @@ void process_bombs(Game * game) {
                     } 
                     if(!done[3]){
                         if(game->level.entities[i - a][j].type == OBSTACLE){
-                            if(game->level.entities[i - a][j].obstacle.is_destructable) {spread[3] = a;}
+                            if(game->level.entities[i - a][j].obstacle.is_destructable) {
+                                spread[3] = a;
+                                put_empty_space(game->level.entities, i - a, j);
+                             }
                             else {spread[3] = a - 1;}                         
                             done[3] = 1;
                         } else {
@@ -171,8 +186,6 @@ void process_bombs(Game * game) {
                 put_explosion(game->level.entities, i, j, spread, game->player.current_bomb_power, EXPLOSION_TICKS);
             }
 
-            // De ticks van de bom in entities moet ook aangepast worden.
-            game->level.entities[i][j].bomb.ticks_left = bomb.ticks_left; 
         } 
 
         if(game->level.entities[i][j].type == EXPLOSION) {
