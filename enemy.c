@@ -8,7 +8,6 @@
 #include "gui.h"
 #include <stdlib.h>
 #include "entity.h"
-#include <stdio.h>
 #include "collision.h"
 
 #define ABSTILE(X)      ((X) / TILE_SIZE * TILE_SIZE)

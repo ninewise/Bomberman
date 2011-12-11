@@ -7,7 +7,6 @@
 #include "blast_it.h"
 #include "level.h"
 #include "gui.h"
-#include <stdio.h>
 #include "entity.h"
 
 #define DECENTER(X)     ((X) - TILE_SIZE/2)

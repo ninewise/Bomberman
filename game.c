@@ -10,8 +10,6 @@
 #include "player.h"
 #include "enemy.h"
 #include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
 #include "collision.h"
 #include "entity.h"
 

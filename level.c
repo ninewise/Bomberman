@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include "entity.h"
 #include <math.h>
-#include <stdio.h> 
 
 LevelInfo generate_level_info(int level_nr)
 {
