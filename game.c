@@ -274,6 +274,7 @@ void process_bombs(Game * game) {
                             put_empty_space(game->level.entities, i - exp.spread[3], j);                        
                         }
                 }
+                game->player.remaining_bombs++;
             }
             
             int collision;    

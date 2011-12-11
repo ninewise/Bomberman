@@ -93,7 +93,10 @@ void render_enemy(Enemy* enemy){
 }
 
 void destroy_enemy(Game* game, Enemy* enemy){
-    enemy->remaining_lives--;
+    if(enemy->remaining_lives > 0){
+        enemy->remaining_lives--;
+        enemy->remaining_lives *= -1;
+    }
     if(!enemy->remaining_lives){
     // Bonus droppen, enemy naar kerkhof (-5,-5) verplaatsen, score bijtellen
         if(rand() % 100 < game->level.level_info.bonus_spawn_ratio * 100){
