@@ -30,6 +30,7 @@ typedef struct Highscorelist
 {
 	Highscore* list;
 	unsigned int* size;
+    int changed;
 } Highscorelist;
 
 #endif

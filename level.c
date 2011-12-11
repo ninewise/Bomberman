@@ -13,7 +13,7 @@
 LevelInfo generate_level_info(int level_nr)
 {
 	LevelInfo level_info;
-	level_info.width = level_nr + 15;
+	level_info.width = 15 + 10 * log(level_nr);
 	level_info.height = level_info.width * 2/3;
 	level_info.level_nr = level_nr;
 	level_info.realm = ((level_nr - 1) % 5) + 1;
