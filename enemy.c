@@ -6,8 +6,8 @@
 #include "entity.h"
 #include <stdio.h>
 
-#define ABSTILE(X)  ((X) / TILE_SIZE * TILE_SIZE)
-#define TILE(X)     ((X) / TILE_SIZE)
+#define ABSTILE(X)      ((X) / TILE_SIZE * TILE_SIZE)
+#define TILE(X)         ((X) / TILE_SIZE)
 
 void init_enemy(Enemy* enemy, Level* level){
 	do{
@@ -32,7 +32,7 @@ void init_enemy(Enemy* enemy, Level* level){
 }
 
 void update_enemy(Enemy* enemy, Game* game){      
-    int tilex, tiley, increment, count = 0;
+    int dx, dy, increment, count = 0, next;
     
     if(enemy->is_boss) increment = BOSS_MOVEMENT_INCREMENT;
     else increment = ENEMY_MOVEMENT_INCREMENT;
@@ -53,18 +53,27 @@ void update_enemy(Enemy* enemy, Game* game){
         } while(!walkable[enemy->move_direction] && count < 10);
     }
 
-    tiley = enemy->y;
-    tilex = enemy->x;
+    dx = 0;
+    dy = 0;
 
     if(count == 10); // De vijand zit hoogstwaarschijnlijk vast, we doen niets.
-    else if(enemy->move_direction == NORTH) tiley -= increment;	
-    else if(enemy->move_direction == SOUTH) tiley += increment;		
-    else if(enemy->move_direction == EAST) tilex += increment;		
-    else if(enemy->move_direction == WEST) tilex -= increment;	
+    else if(enemy->move_direction == NORTH) dy--;
+    else if(enemy->move_direction == SOUTH) dy++;
+    else if(enemy->move_direction == EAST) dx++;
+    else if(enemy->move_direction == WEST) dx--;
 
-    if(is_abs_walkable(game->level.entities, tilex, tiley)) {
-        enemy->x = tilex;
-        enemy->y = tiley;    
+    // We kijken of de tegel waar de vijand naar gaat een bom is.
+    if(dx > 0 || dy > 0)
+        next = is_walkable(game->level.entities[TILE(enemy->x) + dx][TILE(enemy->y) + dy]);
+    else
+        next = is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y)]);
+    if(next == 2) { // Als de vijand op een bom zit, laten we hem
+                    // achteruit lopen.
+        enemy->x += -dx;
+        enemy->y += -dy;
+    } else if(is_abs_walkable(game->level.entities, enemy->x + dx * increment, enemy->y + dy * increment)) {
+        enemy->x += dx;
+        enemy->y += dy;
     }
     
 }

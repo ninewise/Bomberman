@@ -56,9 +56,8 @@ int is_abs_walkable(Entity** entities, int x, int y) {
 }
 
 int is_walkable(Entity entity) {
-    return (
-        (entity.type == EMPTY_SPACE) ||
-        (entity.type == BOMB && entity.bomb.ticks_left < 0) ||
-        (entity.type == EXPLOSION)
-    );
+    if(entity.type == EMPTY_SPACE) return 1;
+    if(entity.type == BOMB && entity.bomb.ticks_left < 0) return 2;
+    if(entity.type == EXPLOSION) return 3;
+    return 0;
 }
