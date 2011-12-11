@@ -73,4 +73,8 @@ void render_enemy(Enemy* enemy){
 	gui_add_enemy(enemy);
 }
 
-void destroy_enemy(Enemy* enemy){}
+void destroy_enemy(Enemy* enemy){
+    enemy->x = -1;
+    enemy->y = -1;
+    enemy->is_dead = 1;
+}

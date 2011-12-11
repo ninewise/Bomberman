@@ -92,6 +92,7 @@ void player_drop_bomb(Player * player, Entity** entities) {
     bomb_entity.bomb = bomb;
 
     entities[TO_TILE(CENTER(player->x))][TO_TILE(CENTER(player->y))] = bomb_entity;
+    //player->remaining_bombs--;
 }
 
 void destroy_player(Player* player) {}

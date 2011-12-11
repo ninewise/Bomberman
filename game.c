@@ -24,6 +24,7 @@ void init_game(Game* game, int level_nr) {
     for( i = 0; i < game->enemies_left; i++ ){
 		init_enemy(&game->enemies[i],&game->level);
     }
+    game->game_over = 0;
     game->score = 0;
 }
 
@@ -31,14 +32,15 @@ void do_game_loop(Game * game) {
 	int stop = 0;
 
     gui_set_level_info(&game->level.level_info);
-
+    gui_start_timer();
 	while(!stop) {
 		check_game_input(game);
 		update_game(game);
 		render_game(game);
-        stop = (game->enemies_left == 0 || game->game_over == 0 || gui_is_terminated());
-	}
-
+        stop = (game->enemies_left == 0 || game->game_over == 1 || gui_is_terminated());
+   	}
+    if(game->enemies_left == 0) gui_set_finished_level(game->score);
+    if(game->game_over) gui_set_game_over();
 	destroy_level(&game->level);
 }
 
@@ -77,6 +79,8 @@ void render_game(Game * game) {
 			render_enemy(&game->enemies[i]);
 		}
     }
+    gui_set_enemies_left(game->enemies_left);
+    gui_set_bombs_left(game->player.remaining_bombs);
     gui_draw_buffer();
 }
 
@@ -140,6 +144,8 @@ void process_bombs(Game * game) {
                             else {spread[0] = a - 1;}                       
                             done[0] = 1;
                         } else {
+                            if(collides_with(game, i * TILE_SIZE, (j - a) * TILE_SIZE) == 1) game->game_over = 1;
+                            if(collides_with(game, i * TILE_SIZE, (j - a) * TILE_SIZE) == 2) done[0] = 1;
                             spread[0] = a;
                         }
                     } 
@@ -151,6 +157,8 @@ void process_bombs(Game * game) {
                             else {spread[1] = a - 1;}                    
                             done[1] = 1;
                         } else {
+                            if(collides_with(game, i * TILE_SIZE, (j + a) * TILE_SIZE) == 1) game->game_over = 1;
+                            if(collides_with(game, i * TILE_SIZE, (j + a) * TILE_SIZE) == 2) done[1] = 1;
                             spread[1] = a;
                         }
                     }
@@ -162,6 +170,8 @@ void process_bombs(Game * game) {
                             else {spread[2] = a - 1;}                        
                             done[2] = 1;
                         } else {
+                            if(collides_with(game, (i + a) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
+                            if(collides_with(game, (i + a) * TILE_SIZE, j * TILE_SIZE) == 2) done[2] = 1;
                             spread[2] = a;
                         }
                     } 
@@ -173,6 +183,8 @@ void process_bombs(Game * game) {
                             else {spread[3] = a - 1;}                         
                             done[3] = 1;
                         } else {
+                            if(collides_with(game, (i - a) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
+                            if(collides_with(game, (i - a) * TILE_SIZE, j * TILE_SIZE) == 2) done[3] = 1;
                             spread[3] = a;
                         }
                     }                            
