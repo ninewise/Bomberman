@@ -18,7 +18,7 @@ void init_enemy(Enemy* enemy, Level* level){
 	do{
 		enemy->x = rand() % (level->level_info.width - 1) * TILE_SIZE;
 		enemy->y = rand() % (level->level_info.height - 1) * TILE_SIZE;
-	} while( (enemy->x < level->level_info.width * TILE_SIZE / 5 && enemy->y < level->level_info.height * TILE_SIZE / 5) 
+	} while( (enemy->x < level->level_info.width * TILE_SIZE / 3 && enemy->y < level->level_info.height * TILE_SIZE / 3) 
 				|| !is_abs_walkable(level->entities, enemy->x, enemy->y) );
 	
 	enemy->move_direction = rand() % 4;

@@ -19,8 +19,8 @@ LevelInfo generate_level_info(int level_nr)
 	level_info.level_nr = level_nr;
 	level_info.realm = ((level_nr - 1) % 5) + 1;
 	level_info.fill_ratio = 0.05 + 1/8 * log(level_nr) + 0.005 * level_nr;
-	level_info.nr_of_enemies =  1 + 3/2 *log(level_nr) * log(level_nr);
-	level_info.spawn_boss = level_nr / 5 + 2;
+	level_info.nr_of_enemies =  3 + 3/2 *log(level_nr) * log(level_nr);
+	level_info.spawn_boss = level_nr / 5;
     if( rand() % 5 + 1 < (level_nr - 1) % 5 ){
         level_info.spawn_boss += (rand() % level_nr) * 1/4 * log(level_nr);
     }
