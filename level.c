@@ -82,6 +82,7 @@ void render_level(Level * level) {
             case POWERUP: gui_add_powerup(&entity.powerup); break;
         }
     }
+
     for(i = 0; i < level->level_info.width; i++) for(j = 0; j < level->level_info.height; j++){
         if(level->entities[i][j].type == EXPLOSION) {
             Explosion exp = level->entities[i][j].explosion;
