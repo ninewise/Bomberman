@@ -103,6 +103,20 @@ void do_enemy_ai(Game * game) {
 }
 
 void process_bonus_items(Game * game) {
+    int i;
+    Entity tile = game->level.entities[(game->player.x + TILE_SIZE / 2) / TILE_SIZE][(game->player.y  + TILE_SIZE / 2) / TILE_SIZE];
+    if(tile.type == POWERUP){
+        put_empty_space(game->level.entities, (game->player.x + TILE_SIZE / 2) / TILE_SIZE, (game->player.y + TILE_SIZE / 2) / TILE_SIZE);  
+        switch(tile.powerup.powerup_type){
+            case EXTRA_POWER: if(game->player.current_bomb_power < PLAYER_MAX_POWER) game->player.current_bomb_power++; break;
+            case EXTRA_BOMB: game->player.remaining_bombs++; break;
+            case FREEZE_ENEMIES: 
+                for( i = 0; i < game->level.level_info.nr_of_enemies; i++ ){
+                    game->enemies[i].frozen = 125;
+                }              
+                break;
+        }
+    }
 }
 
 void process_bombs(Game * game) {
@@ -200,25 +214,6 @@ void process_bombs(Game * game) {
             Explosion exp = game->level.entities[i][j].explosion;
             exp.ticks_left--;
             
-            while(exp.spread[0]) {
-                if(collides_with(game, i * TILE_SIZE, (j - exp.spread[0]) * TILE_SIZE) == 1) game->game_over = 1;
-                exp.spread[0]--; 
-            }
-            while(exp.spread[1]) {
-                if(collides_with(game, i * TILE_SIZE, (j + exp.spread[1]) * TILE_SIZE) == 1) game->game_over = 1;
-                exp.spread[1]--; 
-            }
-            while(exp.spread[2]) {
-                if(collides_with(game, (i + exp.spread[2]) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
-                exp.spread[2]--; 
-            }
-            while(exp.spread[3]) {
-                if(collides_with(game, (i - exp.spread[3]) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
-                exp.spread[3]--; 
-            }
-            
-            game->level.entities[i][j].explosion.ticks_left = exp.ticks_left;
-            
             if(exp.ticks_left == 0) {
                 put_empty_space(game->level.entities, i, j);
                 if(game->level.entities[i][j - exp.spread[0]].type == OBSTACLE 
@@ -252,11 +247,28 @@ void process_bombs(Game * game) {
                         } else {
                             put_empty_space(game->level.entities, i - exp.spread[3], j);                        
                         }
-                }   
+                }
+                
+            while(exp.spread[0]) {
+                if(collides_with(game, i * TILE_SIZE, (j - exp.spread[0]) * TILE_SIZE) == 1) game->game_over = 1;
+                exp.spread[0]--; 
+            }
+            while(exp.spread[1]) {
+                if(collides_with(game, i * TILE_SIZE, (j + exp.spread[1]) * TILE_SIZE) == 1) game->game_over = 1;
+                exp.spread[1]--; 
+            }
+            while(exp.spread[2]) {
+                if(collides_with(game, (i + exp.spread[2]) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
+                exp.spread[2]--; 
+            }
+            while(exp.spread[3]) {
+                if(collides_with(game, (i - exp.spread[3]) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
+                exp.spread[3]--; 
+            }
   
             }
             
-
+            game->level.entities[i][j].explosion.ticks_left = exp.ticks_left;
         }
     }
 }

@@ -14,7 +14,7 @@ void init_player(Player* player) {
     player->x = 1 * TILE_SIZE;
     player->y = 1 * TILE_SIZE;
     player->orientation = NORTH;
-    player->current_bomb_power = 2;
+    player->current_bomb_power = 1;
     player->remaining_bombs = 10;
 }
 
