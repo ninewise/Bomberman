@@ -74,7 +74,7 @@ void render_game(Game * game) {
 	
     render_level(&game->level);
     render_player(&game->player);
-	for( i = 0; i < game->enemies_left; i++ ){
+	for( i = 0; i < game->level.level_info.nr_of_enemies; i++ ){
 		if( !game->enemies[i].is_dead ) {
 			render_enemy(&game->enemies[i]);
 		}
@@ -150,6 +150,7 @@ void process_bombs(Game * game) {
                 // Kijk op welke plekken de explosies zich spreidt
                                                 
                 while( a <= power ){
+                    int collision;
                     if(!done[0]){
                         if(game->level.entities[i][j - a].type == OBSTACLE){
                             if(game->level.entities[i][j - a].obstacle.is_destructable) {
@@ -158,8 +159,13 @@ void process_bombs(Game * game) {
                             else {spread[0] = a - 1;}                       
                             done[0] = 1;
                         } else {
-                            if(collides_with(game, i * TILE_SIZE, (j - a) * TILE_SIZE) == 1) game->game_over = 1;
-                            if(collides_with(game, i * TILE_SIZE, (j - a) * TILE_SIZE) == 2) done[0] = 1;
+                            collision = collides_with(game, i * TILE_SIZE, (j - a) * TILE_SIZE);
+                            if(collision == -1) game->game_over = 1;
+                            if(collision > 0) done[0] = 1;
+                            while(collision > 0){
+                                destroy_enemy(game, &game->enemies[collision - 1]);
+                                collision = collides_with(game, i * TILE_SIZE, (j - a) * TILE_SIZE);
+                            }
                             spread[0] = a;
                         }
                     } 
@@ -171,8 +177,13 @@ void process_bombs(Game * game) {
                             else {spread[1] = a - 1;}                    
                             done[1] = 1;
                         } else {
-                            if(collides_with(game, i * TILE_SIZE, (j + a) * TILE_SIZE) == 1) game->game_over = 1;
-                            if(collides_with(game, i * TILE_SIZE, (j + a) * TILE_SIZE) == 2) done[1] = 1;
+                            collision = collides_with(game, i * TILE_SIZE, (j + a) * TILE_SIZE);
+                            if(collision == -1) game->game_over = 1;
+                            if(collision > 0) done[1] = 1;
+                            while(collision > 0){
+                                destroy_enemy(game, &game->enemies[collision - 1]);
+                                collision = collides_with(game, i * TILE_SIZE, (j + a) * TILE_SIZE);
+                            }
                             spread[1] = a;
                         }
                     }
@@ -184,8 +195,13 @@ void process_bombs(Game * game) {
                             else {spread[2] = a - 1;}                        
                             done[2] = 1;
                         } else {
-                            if(collides_with(game, (i + a) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
-                            if(collides_with(game, (i + a) * TILE_SIZE, j * TILE_SIZE) == 2) done[2] = 1;
+                            collision = collides_with(game, (i + a) * TILE_SIZE, j * TILE_SIZE);
+                            if(collision == -1) game->game_over = 1;
+                            if(collision > 0) done[2] = 1;
+                            while(collision > 0){
+                                destroy_enemy(game, &game->enemies[collision - 1]);
+                                collision = collides_with(game, (i + a) * TILE_SIZE, j * TILE_SIZE);
+                            }
                             spread[2] = a;
                         }
                     } 
@@ -197,8 +213,13 @@ void process_bombs(Game * game) {
                             else {spread[3] = a - 1;}                         
                             done[3] = 1;
                         } else {
-                            if(collides_with(game, (i - a) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
-                            if(collides_with(game, (i - a) * TILE_SIZE, j * TILE_SIZE) == 2) done[3] = 1;
+                            collision = collides_with(game, (i - a) * TILE_SIZE, j * TILE_SIZE);
+                            if(collision == -1) game->game_over = 1;
+                            if(collision > 0) done[3] = 1;
+                            while(collision > 0){
+                                destroy_enemy(game, &game->enemies[collision - 1]);
+                                collision = collides_with(game, (i - a) * TILE_SIZE, j * TILE_SIZE);
+                            }
                             spread[3] = a;
                         }
                     }                            
@@ -248,25 +269,46 @@ void process_bombs(Game * game) {
                             put_empty_space(game->level.entities, i - exp.spread[3], j);                        
                         }
                 }
-                
+            }
+            
+            int collision;    
+
             while(exp.spread[0]) {
-                if(collides_with(game, i * TILE_SIZE, (j - exp.spread[0]) * TILE_SIZE) == 1) game->game_over = 1;
+                collision = collides_with(game, i * TILE_SIZE, (j - exp.spread[0]) * TILE_SIZE);
+                if(collision == -1) game->game_over = 1;
+                while(collision > 0){
+                    destroy_enemy(game, &game->enemies[collision - 1]);
+                    collision = collides_with(game, i * TILE_SIZE, (j - exp.spread[0]) * TILE_SIZE);
+                    }
                 exp.spread[0]--; 
-            }
+                }
             while(exp.spread[1]) {
-                if(collides_with(game, i * TILE_SIZE, (j + exp.spread[1]) * TILE_SIZE) == 1) game->game_over = 1;
+                collision = collides_with(game, i * TILE_SIZE, (j + exp.spread[1]) * TILE_SIZE);
+                if(collision == -1) game->game_over = 1;
+                while(collision > 0){
+                    destroy_enemy(game, &game->enemies[collision - 1]);
+                    collision = collides_with(game, i * TILE_SIZE, (j + exp.spread[1]) * TILE_SIZE);
+                    }
                 exp.spread[1]--; 
-            }
+                }
             while(exp.spread[2]) {
-                if(collides_with(game, (i + exp.spread[2]) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
+                collision = collides_with(game, (i + exp.spread[2]) * TILE_SIZE, j * TILE_SIZE);
+                if(collision == -1) game->game_over = 1;
+                while(collision > 0){
+                    destroy_enemy(game, &game->enemies[collision - 1]);
+                    collision = collides_with(game, (i + exp.spread[2]) * TILE_SIZE, j * TILE_SIZE);
+                    }
                 exp.spread[2]--; 
-            }
+                }
             while(exp.spread[3]) {
-                if(collides_with(game, (i - exp.spread[3]) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
+                collision = collides_with(game, (i - exp.spread[3]) * TILE_SIZE, j * TILE_SIZE);
+                if(collision == 1) game->game_over = 1;
+                while(collision > 0){
+                    destroy_enemy(game, &game->enemies[collision - 1]);
+                    collision = collides_with(game, (i - exp.spread[3]) * TILE_SIZE, j * TILE_SIZE);
+                    }
                 exp.spread[3]--; 
-            }
-  
-            }
+                }
             
             game->level.entities[i][j].explosion.ticks_left = exp.ticks_left;
         }

@@ -24,6 +24,6 @@ void render_enemy(Enemy* enemy);
 /**
  * Verwijdert de enemy.
  */
-void destroy_enemy(Enemy* enemy);
+void destroy_enemy(Game* game, Enemy* enemy);
 
 #endif

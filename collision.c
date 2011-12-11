@@ -47,13 +47,12 @@ int collides_with(Game* game, int x, int y) {
     int tile[2] = {x, y};
     int player[2] = {game->player.x, game->player.y};
     collision = tile_overlap(tile, player);
-    if(collision) return 1;
+    if(collision) return -1;
     for(e = 0; e < game->level.level_info.nr_of_enemies; e++) {
         if(!game->enemies[e].is_dead) {
             int enemy[2] = {game->enemies[e].x, game->enemies[e].y};
-            collision = collision || tile_overlap(tile, enemy);
+            if(tile_overlap(tile, enemy)) return e+1;
         }
     }
-    if(collision) return 2;
     return 0;
 }

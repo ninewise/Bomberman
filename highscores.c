@@ -66,7 +66,7 @@ void display_highscores()
 	int i;
 	printf("\n HIGHSCORELIST \n");
 	for( i = 0 ; i < *list->size ; i++){
-		printf("%d. Score: %d \t Naam: %s \n",i+1,list->list[i].score,list->list[i].name);
+		printf("%d. Score: %d \t Name: %s \n",i+1,list->list[i].score,list->list[i].name);
 	}
 }
 
