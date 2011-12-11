@@ -43,8 +43,9 @@ void check_highscore_entry(int score)
     // nieuwe score op plaats i.
 	if( i < MAX_HIGHSCORE_ENTRIES ) {
 		current.score = score;
+        time(&current.time);
 		printf("Enter your name: ");
-		scanf("%s", current.name);
+		scanf("%s", &current.name);
 
 		if( *list->size < MAX_HIGHSCORE_ENTRIES ){
             // We maken de lijst groter, zodat ze de nieuwe score kan bevatten.
@@ -71,7 +72,7 @@ void display_highscores()
 	int i;
 	printf("\n HIGHSCORELIST \n");
 	for( i = 0 ; i < *list->size ; i++){
-		printf("%d. Score: %d \t Name: %s \n",i+1,list->list[i].score,list->list[i].name);
+		printf("%d. Score: %d \t Name: %s \t Time: %s",i+1,list->list[i].score,list->list[i].name, asctime(localtime(&(list->list[i].time))));
 	}
 }
 

@@ -9,6 +9,8 @@
 #define HIGHSCORE_FILE "highscores.dat"
 #define MAX_HIGHSCORE_ENTRIES 5
 
+#include <time.h>
+
 void load_highscores();
 
 void check_highscore_entry(int score);
@@ -20,7 +22,8 @@ void save_highscores();
 typedef struct Highscore
 {
 	int score;
-	char name [50];	
+	char name [50];
+    time_t time;
 } Highscore;
 
 typedef struct Highscorelist
