@@ -40,8 +40,14 @@ int rectangle_overlap(int rect1[4], int rect2[4]) {
 }
 
 int tile_overlap(int tile1[2], int tile2[2]) {
-    int rect1[4] = {tile1[0], tile1[1], tile1[0] + TILE_SIZE, tile1[1] + TILE_SIZE};
-    int rect2[4] = {tile2[0], tile2[1], tile2[0] + TILE_SIZE, tile2[1] + TILE_SIZE};
+    int rect1[4] = {tile1[0] + 3, tile1[1] + 3,
+                    tile1[0] + TILE_SIZE - 3,
+                    tile1[1] + TILE_SIZE - 3
+    };
+    int rect2[4] = {tile2[0] + 3, tile2[1] + 3,
+                    tile2[0] + TILE_SIZE - 3,
+                    tile2[1] + TILE_SIZE - 3
+    };
     return rectangle_overlap(rect1, rect2);
 }
 

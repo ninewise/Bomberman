@@ -77,11 +77,11 @@ void update_enemy(Enemy* enemy, Game* game){
             next = is_walkable(game->level.entities[TILE(enemy->x)][TILE(enemy->y)]);
         if(next == 2) { // Als de vijand op een bom zit, laten we hem
                         // achteruit lopen.
-            enemy->x += -dx;
-            enemy->y += -dy;
+            enemy->x += -dx * increment;
+            enemy->y += -dy * increment;
         } else if(is_abs_walkable(game->level.entities, enemy->x + dx * increment, enemy->y + dy * increment)) {
-            enemy->x += dx;
-            enemy->y += dy;
+            enemy->x += dx * increment;
+            enemy->y += dy * increment;
         }
     }
     
