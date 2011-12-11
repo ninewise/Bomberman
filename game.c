@@ -59,7 +59,7 @@ void update_game(Game * game)
 	/* Check enemies (move, collision with player) */
 	do_enemy_ai(game);
 
-	/* Process bonus items */
+	/* Process POWERUP items */
 	process_bonus_items(game);
 
 	/* Process bombs */
@@ -136,9 +136,8 @@ void process_bombs(Game * game) {
                         if(game->level.entities[i][j - a].type == OBSTACLE){
                             if(game->level.entities[i][j - a].obstacle.is_destructable) {
                                 spread[0] = a;
-                                put_empty_space(game->level.entities, i, j - a); 
                             }
-                            else {spread[0] = a -1;}                       
+                            else {spread[0] = a - 1;}                       
                             done[0] = 1;
                         } else {
                             spread[0] = a;
@@ -148,7 +147,6 @@ void process_bombs(Game * game) {
                         if(game->level.entities[i][j + a].type == OBSTACLE){
                             if(game->level.entities[i][j + a].obstacle.is_destructable) {
                                 spread[1] = a;
-                                put_empty_space(game->level.entities, i, j + a);
                              }
                             else {spread[1] = a - 1;}                    
                             done[1] = 1;
@@ -160,7 +158,6 @@ void process_bombs(Game * game) {
                         if(game->level.entities[i + a][j].type == OBSTACLE){
                             if(game->level.entities[i + a][j].obstacle.is_destructable) {
                                 spread[2] = a;
-                                put_empty_space(game->level.entities, i + a, j);
                              }
                             else {spread[2] = a - 1;}                        
                             done[2] = 1;
@@ -172,7 +169,6 @@ void process_bombs(Game * game) {
                         if(game->level.entities[i - a][j].type == OBSTACLE){
                             if(game->level.entities[i - a][j].obstacle.is_destructable) {
                                 spread[3] = a;
-                                put_empty_space(game->level.entities, i - a, j);
                              }
                             else {spread[3] = a - 1;}                         
                             done[3] = 1;
@@ -195,7 +191,40 @@ void process_bombs(Game * game) {
             game->level.entities[i][j].explosion.ticks_left = exp.ticks_left;
             
             if(exp.ticks_left == 0) {
-                put_empty_space(game->level.entities, i, j);    
+                put_empty_space(game->level.entities, i, j);
+                if(game->level.entities[i][j - exp.spread[0]].type == OBSTACLE 
+                   && game->level.entities[i][j - exp.spread[0]].obstacle.is_destructable){
+                        if(rand() % 100 < game->level.level_info.bonus_spawn_ratio * 100){
+                            put_powerup(game->level.entities, i, j - exp.spread[0], rand() % 3);
+                        } else {
+                            put_empty_space(game->level.entities, i, j - exp.spread[0]);                        
+                        }
+                }  
+                if(game->level.entities[i][j + exp.spread[1]].type == OBSTACLE 
+                   && game->level.entities[i][j + exp.spread[1]].obstacle.is_destructable){
+                        if(rand() % 100 < game->level.level_info.bonus_spawn_ratio * 100){
+                            put_powerup(game->level.entities, i, j + exp.spread[1], rand() % 3);
+                        } else {
+                            put_empty_space(game->level.entities, i, j + exp.spread[1]);                        
+                        }
+                } 
+                if(game->level.entities[i + exp.spread[2]][j].type == OBSTACLE 
+                   && game->level.entities[i + exp.spread[2]][j].obstacle.is_destructable){
+                        if(rand() % 100 < game->level.level_info.bonus_spawn_ratio * 100){
+                            put_powerup(game->level.entities, i + exp.spread[2], j, rand() % 3);
+                        } else {
+                            put_empty_space(game->level.entities, i + exp.spread[2], j);                        
+                        }
+                }  
+                if(game->level.entities[i - exp.spread[3]][j].type == OBSTACLE 
+                   && game->level.entities[i - exp.spread[3]][j].obstacle.is_destructable){
+                        if(rand() % 100 < game->level.level_info.bonus_spawn_ratio * 100){
+                            put_powerup(game->level.entities, i - exp.spread[3], j, rand() % 3);
+                        } else {
+                            put_empty_space(game->level.entities, i - exp.spread[3], j);                        
+                        }
+                }   
+  
             }
             
 
