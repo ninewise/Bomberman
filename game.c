@@ -200,6 +200,23 @@ void process_bombs(Game * game) {
             Explosion exp = game->level.entities[i][j].explosion;
             exp.ticks_left--;
             
+            while(exp.spread[0]) {
+                if(collides_with(game, i * TILE_SIZE, (j - exp.spread[0]) * TILE_SIZE) == 1) game->game_over = 1;
+                exp.spread[0]--; 
+            }
+            while(exp.spread[1]) {
+                if(collides_with(game, i * TILE_SIZE, (j + exp.spread[1]) * TILE_SIZE) == 1) game->game_over = 1;
+                exp.spread[1]--; 
+            }
+            while(exp.spread[2]) {
+                if(collides_with(game, (i + exp.spread[2]) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
+                exp.spread[2]--; 
+            }
+            while(exp.spread[3]) {
+                if(collides_with(game, (i - exp.spread[3]) * TILE_SIZE, j * TILE_SIZE) == 1) game->game_over = 1;
+                exp.spread[3]--; 
+            }
+            
             game->level.entities[i][j].explosion.ticks_left = exp.ticks_left;
             
             if(exp.ticks_left == 0) {
