@@ -124,10 +124,12 @@ void process_bonus_items(Game * game) {
 }
 
 void process_explosion(Game * game, int i, int j){
+    int collision;
     Explosion exp = game->level.entities[i][j].explosion;
     exp.ticks_left--;
     // Einde ontploffing        
     if(exp.ticks_left == 0) {
+        int b;
         put_empty_space(game->level.entities, i, j);
         // Kijk of we op een vernietigd obstakel een bonus plaatsen
         if(NORTH(i,j,exp.spread[0]).type == OBSTACLE && NORTH(i,j,exp.spread[0]).obstacle.is_destructable){
@@ -159,7 +161,6 @@ void process_explosion(Game * game, int i, int j){
             }
         }
         // Maakt beschadigde vijanden klaar om opnieuw schade te kunnen krijgen
-        int b;
         for( b = 0; b < game->level.level_info.nr_of_enemies; b++ ){
             if(game->enemies[b].remaining_lives < 0) game->enemies[b].remaining_lives *= -1;
         }
@@ -168,7 +169,6 @@ void process_explosion(Game * game, int i, int j){
     }
     
     // Anders controleren we of er nog vijanden of niet snuggere gebruikers in een explosie zijn gewandeld
-    int collision;
     while(exp.spread[0]) {
         collision = loose_collides_with(game, i * TILE_SIZE, (j - exp.spread[0]) * TILE_SIZE, 3);
         if(collision == -1) game->game_over = 1;
@@ -220,13 +220,14 @@ void process_bombs(Game * game) {
     for(i = 0; i < game->level.level_info.width; i++) for(j = 0; j < game->level.level_info.height; j++) {
         if(game->level.entities[i][j].type == BOMB) {
             Bomb bomb = game->level.entities[i][j].bomb;
+            int occupied;
             // We brengen de ticks 1 keer dichter bij 0.
             if(bomb.ticks_left < 0) bomb.ticks_left++;
             else bomb.ticks_left--;
 
             // We zorgen dat bommen niet langer beloopbaar zijn zodra er geen
             // player of enemy meer op staat.
-            int occupied = collides_with(game, bomb.x, bomb.y);
+            occupied = collides_with(game, bomb.x, bomb.y);
             if(!occupied && bomb.ticks_left < 0) bomb.ticks_left *= -1;
 
             // De ticks van de bom in entities moet ook aangepast worden.
