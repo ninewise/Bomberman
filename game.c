@@ -44,8 +44,8 @@ void do_game_loop(Game * game) {
 		render_game(game);
         stop = (game->enemies_left == 0 || game->game_over == 1 || gui_is_terminated());
    	}
-    if(game->enemies_left == 0) gui_set_finished_level(game->score);
     if(game->game_over) gui_set_game_over();
+    else if(game->enemies_left == 0) gui_set_finished_level(game->score);
 	destroy_level(&game->level);
 }
 
