@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: main.c
+ * Groepsnummer: 3 
+ */
 #pragma comment(lib, "jvm.lib")
 
 #include <stdio.h>

@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: cmdqueue.h
+ * Groepsnummer: 3 
+ */
 #ifndef H_COMMAND_QUEUE
 #define H_COMMAND_QUEUE
 

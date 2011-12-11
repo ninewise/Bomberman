@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: cmdqueue.c
+ * Groepsnummer: 3 
+ */
 #include <stdlib.h>
 #include "cmdqueue.h"
 

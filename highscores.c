@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: highscores.c
+ * Groepsnummer: 3 
+ */
 #include <stdio.h>
 #include <stdlib.h> 
 #include "highscores.h"

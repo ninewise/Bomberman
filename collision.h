@@ -1,4 +1,8 @@
-
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: collision.h
+ * Groepsnummer: 3 
+ */
 #ifndef H_FUNCTIONS
 #define H_FUNCTIONS
 

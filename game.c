@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: game.c
+ * Groepsnummer: 3 
+ */
 #include "blast_it.h"
 #include "gui.h"
 #include "game.h"

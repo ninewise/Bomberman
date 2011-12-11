@@ -1,4 +1,8 @@
-
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: entity.h
+ * Groepsnummer: 3 
+ */
 #ifndef H_ENTITY
 #define H_ENTITY
 

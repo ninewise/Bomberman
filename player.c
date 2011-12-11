@@ -1,4 +1,8 @@
-
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: player.c
+ * Groepsnummer: 3 
+ */
 #include "player.h"
 #include "blast_it.h"
 #include "level.h"

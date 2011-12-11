@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: blast_it.h
+ * Groepsnummer: 3 
+ */
 #ifndef H_BLAST_IT
 #define H_BLAST_IT
 

@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: highscores.h
+ * Groepsnummer: 3 
+ */
 #ifndef H_HIGHSCORE_TABLE
 #define H_HIGHSCORE_TABLE
 

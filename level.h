@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: level.h
+ * Groepsnummer: 3 
+ */
 #include "blast_it.h"
 
 #ifndef H_LEVEL

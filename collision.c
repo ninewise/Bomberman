@@ -1,4 +1,8 @@
-
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: collision.c
+ * Groepsnummer: 3 
+ */
 #include "collision.h"
 #include "game.h"
 #include "enemy.h"

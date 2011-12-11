@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: game.h
+ * Groepsnummer: 3 
+ */
 #ifndef H_GAME
 #define H_GAME
 

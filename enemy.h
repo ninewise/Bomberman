@@ -1,3 +1,8 @@
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: enemy.h
+ * Groepsnummer: 3 
+ */
 #ifndef H_ENEMY
 #define H_ENEMY
 

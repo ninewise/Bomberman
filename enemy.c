@@ -1,4 +1,8 @@
-
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: enemy.c
+ * Groepsnummer: 3 
+ */
 #include "enemy.h"
 #include "blast_it.h"
 #include "gui.h"
@@ -83,7 +87,10 @@ void render_enemy(Enemy* enemy){
 void destroy_enemy(Game* game, Enemy* enemy){
     enemy->remaining_lives--;
     if(!enemy->remaining_lives){
-    // Enemy naar kerkhof (-5,-5) verplaatsen, score bijtellen
+    // Bonus droppen, enemy naar kerkhof (-5,-5) verplaatsen, score bijtellen
+        if(rand() % 100 < game->level.level_info.bonus_spawn_ratio * 100){
+            put_powerup(game->level.entities, enemy->x / TILE_SIZE, enemy->y / TILE_SIZE, rand() % 3);
+        }
         enemy->x = -5;
         enemy->y = -5;
         enemy->is_dead = 1;

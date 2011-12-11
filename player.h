@@ -1,4 +1,8 @@
-
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: player.h
+ * Groepsnummer: 3 
+ */
 #ifndef H_PLAYER
 #define H_PLAYER
 

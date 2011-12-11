@@ -396,6 +396,11 @@ void gui_set_finished_level(int score)
 	}
 }
 
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: gui.c
+ * Groepsnummer: 3 
+ */
 int gui_is_movement_key_down(void)
 {
 	if(!ready) {

@@ -1,5 +1,10 @@
 #include "blast_it.h"
 
+/**
+ * Naam: Frederique De Baerdemaeker, Felix Van der Jeugt
+ * Bestand: gui.h
+ * Groepsnummer: 3 
+ */
 #ifndef H_GUI
 #define H_GUI
 
