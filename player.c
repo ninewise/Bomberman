@@ -19,7 +19,7 @@ void init_player(Player* player) {
     player->y = 1 * TILE_SIZE;
     player->orientation = NORTH;
     player->current_bomb_power = 1;
-    player->remaining_bombs = 20;
+    player->remaining_bombs = 1;
 }
 
 void render_player(Player* player) {
