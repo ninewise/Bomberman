@@ -78,10 +78,13 @@ void render_enemy(Enemy* enemy){
 }
 
 void destroy_enemy(Game* game, Enemy* enemy){
-    enemy->x = 1;
-    enemy->y = 1;
-    enemy->is_dead = 1;
-    game->enemies_left--;
-    if(enemy->is_boss) game->score += SCORE_BOSS;
-    else if(BASE_SCORE_ENEMY - gui_get_timer_score() > 0) game->score += (BASE_SCORE_ENEMY - gui_get_timer_score());
+    enemy->remaining_lives--;
+    if(!enemy->remaining_lives){
+        enemy->x = 1;
+        enemy->y = 1;
+        enemy->is_dead = 1;
+        game->enemies_left--;
+        if(enemy->is_boss) game->score += SCORE_BOSS;
+        else if(BASE_SCORE_ENEMY - gui_get_timer_score() > 0) game->score += (BASE_SCORE_ENEMY - gui_get_timer_score());
+    }
 }
