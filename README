@@ -1,0 +1,7 @@
+
+This is a project Frederique and I made for Software Engineering I.
+
+To compile on Linux, adjust the makefile to your system. Just change the paths to your Java JDK installation. Export the LD_LIBRARY_PATH as e.g. /<path_to_javajdk>/jre/lib/i386/server. That's it.
+
+To compile on Windows, I don't even.
+
